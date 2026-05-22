@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IS Strategy - Quiz Review</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+header {
+    background: linear-gradient(135deg, #2c3e50, #4a6378);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+header h1 { font-size: 28px; margin-bottom: 8px; }
+header p { opacity: 0.9; font-size: 14px; }
+.controls {
+    padding: 20px 30px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+.controls select, .controls button {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+}
+.controls button {
+    background: #667eea;
+    color: white;
+    border: none;
+    transition: background 0.2s;
+}
+.controls button:hover { background: #5568d3; }
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #43cea2, #185a9d);
+    transition: width 0.3s;
+    width: 0%;
+}
+.stats {
+    padding: 15px 30px;
+    background: #f0f4f8;
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.stat-item { text-align: center; }
+.stat-value { font-size: 20px; font-weight: bold; color: #2c3e50; }
+.stat-label { color: #666; font-size: 12px; }
+.question-container {
+    padding: 30px;
+    min-height: 400px;
+}
+.q-number {
+    color: #667eea;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.q-type {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #667eea;
+    color: white;
+    border-radius: 12px;
+    font-size: 11px;
+    margin-left: 10px;
+}
+.q-text {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option {
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.4;
+}
+.option:hover:not(:disabled) {
+    border-color: #667eea;
+    background: #f5f7ff;
+    transform: translateX(5px);
+}
+.option:disabled { cursor: not-allowed; }
+.option.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+.option.wrong {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+.option.show-correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: 600;
+}
+.feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+.feedback.wrong {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+.navigation {
+    padding: 20px 30px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e0e0e0;
+}
+.nav-btn {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.nav-btn.prev { background: #6c757d; color: white; }
+.nav-btn.next { background: #667eea; color: white; }
+.nav-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.q-counter { font-weight: 600; color: #2c3e50; }
+.tf-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+@media (max-width: 600px) {
+    .tf-options { grid-template-columns: 1fr; }
+    .stats { flex-wrap: wrap; gap: 10px; }
+    header h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📚 Information Systems Strategy</h1>
+        <p>The Final Lecture: Comprehensive Review Quiz</p>
+    </header>
+    <div class="controls">
+        <select id="filterSelect">
+            <option value="all">All Questions</option>
+            <option value="tf">True/False Only</option>
+            <option value="mcq">Multiple Choice Only</option>
+        </select>
+        <button onclick="resetQuiz()">🔄 Reset Quiz</button>
+        <button onclick="randomQuestion()">🎲 Random</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="answeredCount">0</div>
+            <div class="stat-label">Answered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="correctCount" style="color:#28a745;">0</div>
+            <div class="stat-label">Correct</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="wrongCount" style="color:#dc3545;">0</div>
+            <div class="stat-label">Wrong</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="scorePercent">0%</div>
+            <div class="stat-label">Score</div>
+        </div>
+    </div>
+    <div class="question-container" id="questionContainer"></div>
+    <div class="navigation">
+        <button class="nav-btn prev" id="prevBtn" onclick="prevQuestion()">← Previous</button>
+        <span class="q-counter" id="qCounter">1 / 1</span>
+        <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Next →</button>
+    </div>
+</div>
+
+<script>
+const questions = [
+    // TRUE/FALSE QUESTIONS
+    {type:"tf", q:"In-sourcing is always the best alternative to reduce administrative and operational costs in an organization.", a:false, exp:"In-sourcing usually involves higher costs compared to some outsourcing options."},
+    {type:"tf", q:"'Competitive Advantage' and high confidentiality are among the most important drivers for choosing an 'In-house Development' strategy.", a:true, exp:""},
+    {type:"tf", q:"Outsourcing means relying on the internal IT team within the organization to develop systems.", a:false, exp:"Outsourcing refers to contracting with an external company or third-party provider."},
+    {type:"tf", q:"Strategic Outsourcing aims to build a long-term partnership with the vendor to enhance efficiency.", a:true, exp:""},
+    {type:"tf", q:"'Hidden Costs' in outsourcing are associated with coordinating, managing, and monitoring the external vendor.", a:true, exp:""},
+    {type:"tf", q:"The term 'Vendor Lock-in' means that the organization has gained full control over the external vendor.", a:false, exp:"It means the organization has become overly dependent on the vendor and finds it difficult to switch to another."},
+    {type:"tf", q:"A Service Level Agreement (SLA) is a contract that defines technical and financial standards, as well as penalties between the organization and the service provider.", a:true, exp:""},
+    {type:"tf", q:"Off-shore Outsourcing is characterized by easy communication and cultural alignment between the company and the vendor.", a:false, exp:"It is characterized by communication difficulties and differences in language and culture."},
+    {type:"tf", q:"Near-shore Outsourcing refers to contracting with companies in countries like China and Japan to benefit from currency differences.", a:false, exp:"This is considered Off-shore; Near-shore is contracting with companies in neighboring countries."},
+    {type:"tf", q:"In the Strategic Decision Matrix, if strategic importance is high and differentiation is high, we choose Off-the-shelf software (COTS).", a:false, exp:"In this case, we choose In-house development/In-sourcing."},
+    {type:"tf", q:"The Strategic Decision Matrix is a 'subjective' tool that depends only on the manager's personal whims.", a:false, exp:"It is an analytical tool based on strategic importance and differentiation."},
+    {type:"tf", q:"Commercial Off-The-Shelf (COTS) software is characterized by being quick to implement and proven by other users.", a:true, exp:""},
+    {type:"tf", q:"The 'Make' decision (building the system internally) is the best option if the system is available as high-quality COTS.", a:false, exp:"Buying COTS would be more efficient and cost-effective in this case."},
+    {type:"tf", q:"Customized software requires the organization to change its business processes to align with the software's logic.", a:false, exp:"Customized software is designed specifically to meet the company's unique needs."},
+    {type:"tf", q:"COTS software requires the organization to change its business processes to align with the software's logic.", a:true, exp:""},
+    {type:"tf", q:"Cloud Computing contributes to transforming Capital Expenditures (CapEx) into Operational Expenditures (OpEx).", a:true, exp:""},
+    {type:"tf", q:"Cloud computing is an unsuitable option for startups due to its high capital costs.", a:false, exp:"It is ideal for startups as it requires little to no upfront capital expenditure."},
+    {type:"tf", q:"In Cloud Computing, the term IaaS refers to providing infrastructure such as servers and storage as a service.", a:true, exp:""},
+    {type:"tf", q:"Public Cloud is more private and secure than Private Cloud.", a:false, exp:"Private Cloud is more secure as it is dedicated to a single organization."},
+    {type:"tf", q:"Private Cloud relies on sharing technical resources with other companies to reduce costs.", a:false, exp:"It is dedicated to a single organization."},
+    {type:"tf", q:"SaaS is an abbreviation for 'System as a Service' and means renting physical hardware over the internet.", a:false, exp:"SaaS stands for 'Software as a Service'."},
+    {type:"tf", q:"Scalability in Cloud Computing refers to the system's ability to grow or shrink according to business needs with a click of a button.", a:true, exp:""},
+    {type:"tf", q:"Payback Period is the percentage of profit a system generates compared to its cost.", a:false, exp:"This is the definition of Return on Investment - ROI."},
+    {type:"tf", q:"Return on Investment (ROI) is the percentage of profit a system generates compared to its cost.", a:true, exp:""},
+    {type:"tf", q:"The shorter the Payback Period, the lower the investment project risk.", a:true, exp:""},
+    {type:"tf", q:"To calculate the Payback Period, we multiply the initial cost by the annual net cash flow.", a:false, exp:"We divide the initial cost by the annual net flow."},
+    {type:"tf", q:"An ROI of 480% means the system achieved profits far exceeding its original cost.", a:true, exp:""},
+    {type:"tf", q:"In ROI analysis, a result of 1 (or 100%) means the organization only recovered its cost without additional profit.", a:true, exp:""},
+    {type:"tf", q:"When ROI is less than 100%, it means the project has not yet recovered its original costs.", a:true, exp:""},
+    {type:"tf", q:"Direct Conversion strategy is the least risky when implementing a new system.", a:false, exp:"It is the most risky as it involves stopping the old system and starting the new one immediately."},
+    {type:"tf", q:"Direct Conversion should be used for highly sensitive systems like aviation or banking.", a:false, exp:"Sensitive systems require Parallel Conversion to ensure a backup is available."},
+    {type:"tf", q:"Pilot Conversion involves implementing the system in one branch of the company before rolling it out to others.", a:true, exp:""},
+    {type:"tf", q:"Phased Conversion strategy requires a very long time for full system implementation.", a:true, exp:""},
+    {type:"tf", q:"Parallel Conversion strategy is very expensive because it requires running two systems simultaneously.", a:true, exp:""},
+    {type:"tf", q:"Parallel Conversion provides the best data protection but consumes double human resources.", a:true, exp:""},
+    {type:"tf", q:"Strategic Alignment means that IT goals should operate in isolation from core business goals.", a:false, exp:"Alignment requires IT and business goals to work together."},
+    {type:"tf", q:"In Strategic Alignment, IT Strategy must follow Business Strategy trends.", a:true, exp:""},
+    {type:"tf", q:"CRM systems primarily aim to improve internal factory processes and increase machine efficiency.", a:false, exp:"CRM is for managing customer relationships and increasing sales."},
+    {type:"tf", q:"When calculating the Payback Period, annual maintenance costs must be deducted from total savings to reach the net flow.", a:true, exp:""},
+    {type:"tf", q:"Saving on 'wasted losses' is considered a form of cash inflow when evaluating information systems.", a:true, exp:""},
+    {type:"tf", q:"ERP is a comprehensive system that links all organization departments (Accounting, HR, Production) in a single database.", a:true, exp:""},
+    {type:"tf", q:"'Time to Market' is one of the most important factors that favor COTS over In-house development.", a:true, exp:""},
+    {type:"tf", q:"Management Information Systems (MIS) are used only to support executive decision-making.", a:false, exp:"MIS also supports operational and administrative processes."},
+    {type:"tf", q:"The Internet of Things (IoT) refers to the use of smart devices connected to each other via the internet.", a:true, exp:""},
+    {type:"tf", q:"Automation reduces the need for human interaction in daily operations.", a:true, exp:""},
+    {type:"tf", q:"Cybersecurity aims only to protect data within the organization's internal networks.", a:false, exp:"It protects data both within internal networks and across the internet."},
+    {type:"tf", q:"Total replacement of old systems with new ones (Direct Cutover) is the safest way to implement information systems.", a:false, exp:"It carries high risks if the new system is not fully ready."},
+    {type:"tf", q:"Knowledge Management Systems (KMS) help in storing and retrieving institutional knowledge when needed.", a:true, exp:""},
+    {type:"tf", q:"Artificial Intelligence (AI) is an integral part of modern trends in information systems.", a:true, exp:""},
+    {type:"tf", q:"Transaction Processing Systems (TPS) focus on supporting daily operations like purchases and invoicing.", a:true, exp:""},
+    {type:"tf", q:"The use of Strategic Information Systems is limited only to large corporations.", a:false, exp:"Small and medium enterprises can also benefit from them to achieve their goals."},
+    {type:"tf", q:"Cloud Computing technology contributes to reducing technical infrastructure costs.", a:true, exp:""},
+    {type:"tf", q:"Decision Support Systems (DSS) are used to provide recommendations and reports that support decision-making.", a:true, exp:""},
+    {type:"tf", q:"Integrating old and new systems is always executed without any technical problems.", a:false, exp:"Integration may face technical challenges and compatibility difficulties."},
+    {type:"tf", q:"IoT can improve the management of agricultural resources.", a:true, exp:""},
+    {type:"tf", q:"Measuring Return on Investment (ROI) in information systems is considered an unnecessary tool.", a:false, exp:"ROI is essential for evaluating system effectiveness."},
+    {type:"tf", q:"ROI measurement helps organizations make effective decisions regarding IS implementation.", a:true, exp:""},
+    {type:"tf", q:"Geographic Information Systems (GIS) are used only in urban planning.", a:false, exp:"GIS is also used in agriculture, natural resource management, and many other fields."},
+    {type:"tf", q:"Automating administrative processes contributes to improving productivity and reducing human error.", a:true, exp:""},
+    {type:"tf", q:"IS Strategy focuses only on the technical aspect without considering institutional goals.", a:false, exp:"Strategy must align with institutional goals to achieve synergy."},
+    {type:"tf", q:"Health Information Systems (HIS) contribute to improving the delivery and quality of healthcare services.", a:true, exp:""},
+    {type:"tf", q:"Decision Support Systems (DSS) rely only on historical data for decision-making.", a:false, exp:"DSS also relies on current and predictive data."},
+    {type:"tf", q:"Management Information Systems (MIS) focus on providing data quickly and accurately to support administrative decisions.", a:true, exp:""},
+    {type:"tf", q:"Enterprise Resource Planning (ERP) is suitable for all types of organizations regardless of their size.", a:true, exp:""},
+    {type:"tf", q:"Cybersecurity relies on technology only, without the need for human factors.", a:false, exp:"It requires both technology and human procedures."},
+    {type:"tf", q:"Automation increases process execution time due to reliance on software.", a:false, exp:"It reduces the time required for execution."},
+    {type:"tf", q:"Automation increases the cost of operations without providing practical benefits.", a:false, exp:"It contributes to reducing long-term costs and increasing efficiency."},
+    {type:"tf", q:"Knowledge Management Systems (KMS) contribute to improving collaboration between teams within the organization.", a:true, exp:""},
+    {type:"tf", q:"IoT relies on connectivity between devices only, without data analysis.", a:false, exp:"It also relies on data analysis to improve efficiency."},
+    {type:"tf", q:"Phased system conversion contributes to reducing errors during implementation.", a:true, exp:""},
+    {type:"tf", q:"IoT is considered part of future trends in information systems.", a:true, exp:""},
+    {type:"tf", q:"GIS is used to determine the best location for commercial businesses.", a:true, exp:""},
+    {type:"tf", q:"CRM is used for inventory management.", a:false, exp:"CRM is for customer relationship management."},
+    {type:"tf", q:"DSS contributes to long-term decisions.", a:true, exp:""},
+    {type:"tf", q:"TPS is limited only to industrial services.", a:false, exp:"TPS is used in all transaction-based services."},
+    {type:"tf", q:"Using IoT can help improve inventory management in stores.", a:true, exp:""},
+    {type:"tf", q:"GIS cannot be used in the agricultural sector.", a:false, exp:"GIS is used to improve crop productivity and soil analysis."},
+    {type:"tf", q:"In a Parallel Conversion strategy, the old system is stopped immediately when the new system starts.", a:false, exp:"Both systems run together for a period."},
+    {type:"tf", q:"'Shadowing' or 'Running in the background' is considered low-risk because the new system works without affecting users.", a:true, exp:""},
+    {type:"tf", q:"Senior management (Executives) use Transaction Processing Systems (TPS) for long-term planning.", a:false, exp:"Executives use Executive Information Systems - EIS or ESS; TPS is for operational levels."},
+    {type:"tf", q:"Strategic Alignment occurs when IS capabilities directly support the ambitions and goals of the business strategy.", a:true, exp:""},
+    {type:"tf", q:"Data is defined as raw facts that have no meaning on their own.", a:true, exp:"Information is the processed data that has meaning."},
+    {type:"tf", q:"Pilot Conversion strategy involves implementing the system in one branch or department before generalizing it to the entire company.", a:true, exp:""},
+    {type:"tf", q:"Decision Support Systems (DSS) are primarily used to solve routine problems.", a:false, exp:"DSS is for semi-structured and non-routine problems; TPS is for routine ones."},
+    {type:"tf", q:"IS Strategy is an integral part of the overall organizational strategy and cannot be formulated in isolation.", a:true, exp:""},
+    {type:"tf", q:"If an organization's strategy is 'Customer Service Excellence,' the aligned IS strategy must focus on CRM systems.", a:true, exp:""},
+    {type:"tf", q:"The role of Information Systems in the management pyramid is limited to providing routine reports to middle management only.", a:false, exp:"It serves all levels, from operational to strategic."},
+    {type:"tf", q:"Strategic Alignment is a 'static' process that occurs only once when the system is established.", a:false, exp:"It is a continuous and dynamic process to keep up with changes."},
+    {type:"tf", q:"Strategic Alignment means that technology follows organizational goals, and not just the other way around, as there is a mutual influence relationship.", a:true, exp:""},
+    {type:"tf", q:"Failure to achieve Strategic Alignment often leads to massive technical investments without achieving a real Return on Investment (ROI).", a:true, exp:""},
+    {type:"tf", q:"Strategic Alignment is the exclusive responsibility of the IT Manager, and senior management has no role in it.", a:false, exp:"It is a shared responsibility between senior management and IT management."},
+    {type:"tf", q:"Strategic Information Systems help the organization gain a sustainable competitive advantage by changing the way it competes in the market.", a:true, exp:""},
+    {type:"tf", q:"IT Strategy is the same as IS Strategy, and there is no difference between them in the strategic perspective.", a:false, exp:"IS focuses on 'What' - applications and data; IT focuses on 'How' - hardware and technology."},
+    {type:"tf", q:"The Course Specification aims only to introduce the student to technical programming skills, without addressing the managerial dimension of IS.", a:false, exp:"It aims to link technology with strategic management."},
+
+    // MCQ QUESTIONS
+    {type:"mcq", q:"Which of the following alternatives is most suitable when an organization needs a system that provides a 'unique competitive advantage' and total confidentiality?", options:["Near-shore Outsourcing","Commercial Off-The-Shelf (COTS)","Off-shore Outsourcing","In-house Development"], a:3},
+    {type:"mcq", q:"'Vendor Lock-in' is defined as:", options:["The organization's ability to switch vendors easily.","The difficulty of moving to another vendor due to high costs or technical constraints.","An agreement that guarantees the quality of service provided.","Transforming costs from operational to capital."], a:1},
+    {type:"mcq", q:"What is the correct formula for calculating the Payback Period?", options:["Initial Cost ÷ Annual Net Cash Flow","Initial Cost × Annual Net Cash Flow","Net Profit ÷ Initial Cost","Initial Cost - Annual Savings"], a:0},
+    {type:"mcq", q:"Which cloud computing model provides 'ready-to-use applications' for users, such as Gmail?", options:["IaaS (Infrastructure as a Service)","PaaS (Platform as a Service)","SaaS (Software as a Service)","Private Cloud"], a:2},
+    {type:"mcq", q:"The conversion strategy in which the old and new systems run together for a period of time is:", options:["Parallel Conversion","Direct Conversion","Pilot Conversion","Phased Conversion"], a:0},
+    {type:"mcq", q:"Strategic Alignment is considered successful when:", options:["Technology goals follow the organization's goals.","The organization buys the latest hardware on the market.","The IT department operates completely independently.","The Information Systems budget is minimized."], a:0},
+    {type:"mcq", q:"In ROI analysis, if the result is 400%, this means:", options:["The return is four times the cost.","The company lost 400 EGP.","The payback period is 4 years.","The system failed to achieve its objectives."], a:0},
+    {type:"mcq", q:"The main disadvantage of the Direct Conversion strategy is:", options:["High risk in case of failure.","Very high cost.","Extremely slow implementation.","The need for additional staff."], a:0},
+    {type:"mcq", q:"A Service Level Agreement (SLA) is a contract that guarantees:", options:["The vendor's commitment to specific quality and performance standards.","The company's ownership of the source code.","Hiring new programmers within the company.","Purchasing new server hardware."], a:0},
+    {type:"mcq", q:"In which of the following cases is it preferable to buy COTS software?", options:["When needs are standardized and common.","When the company needs absolute confidentiality.","When there is no similar system available in the market.","When the company desires a unique competitive advantage."], a:0},
+    {type:"mcq", q:"The concept of 'Cloud Computing' primarily relies on:", options:["Renting technical resources over the internet.","Buying hardware and storing it locally.","Completely dispensing with the internet.","Developing software manually only."], a:0},
+    {type:"mcq", q:"What is meant by 'Near-shore Outsourcing'?", options:["Contracting with a company in a neighboring country that shares the same language or culture.","Contracting with a company in a completely different continent.","Relying on the programming team within the company's headquarters.","Buying computers from a local market."], a:0},
+    {type:"mcq", q:"Annual Maintenance Costs are considered part of:", options:["Cash Outflows","Cash Inflows","One-time Capital Expenditures","Costs that do not affect the Payback Period."], a:0},
+    {type:"mcq", q:"Which cloud alternative gives the organization the 'maximum degree of security and privacy'?", options:["Private Cloud","Public Cloud","Hybrid Cloud","SaaS"], a:0},
+    {type:"mcq", q:"The Phased Conversion strategy relies on:", options:["Implementing specific parts of the system sequentially.","Implementing the entire system in one day.","Using the new system for only one branch as a sample.","Completely canceling the old system before starting the new one."], a:0},
+    {type:"mcq", q:"What is the main benefit of calculating the 'Annual Net Cash Flow'?", options:["Determining the real profit generated by the system after deducting operational costs.","Knowing the total sales of the company.","Knowing the currency exchange rate.","Determining the IT Manager's salary."], a:0},
+    {type:"mcq", q:"In the Decision Matrix, the quadrant that combines (Low Importance + Low Differentiation) directs us toward:", options:["Off-the-shelf software (COTS)","In-house Development","Strategic Outsourcing","Building a long-term partnership"], a:0},
+    {type:"mcq", q:"Which of the following is considered a Capital Expenditure (CapEx) when purchasing an information system?", options:["Purchasing servers and permanent software licenses.","Monthly internet bill.","Annual technical support cost.","Salaries of the employees who use the system."], a:0},
+    {type:"mcq", q:"'Change Management' is essential when implementing an ERP system because:", options:["Employees may resist the new system due to changes in their work routine.","The system needs difficult programming.","Electricity may be cut off during conversion.","The cost of the system is very high."], a:0},
+    {type:"mcq", q:"If the system's lifespan is 5 years and its payback period is 6 years, the project is considered:", options:["Economically unfeasible.","Successful and economically feasible.","Better than other investment alternatives.","Highly profitable."], a:0},
+    {type:"mcq", q:"The PaaS model (Platform as a Service) is primarily oriented toward serving:", options:["Programmers and developers to build their applications.","Regular users (e.g., Gmail).","Account managers only.","Reception staff."], a:0},
+    {type:"mcq", q:"One of the risks of 'Off-shore Outsourcing' that does not appear in local outsourcing is:", options:["Significant time zone differences and language barriers.","High software price.","Unavailability of computers.","Quality of the source code."], a:0},
+    {type:"mcq", q:"'Strategic Alignment' is used to ensure that IT investments achieve:", options:["Maximum added value to business goals.","The largest number of devices in the company.","High salaries for employees.","Reduction in working hours."], a:0},
+    {type:"mcq", q:"The advantage of 'Direct Conversion' is that it is:", options:["The least expensive and fastest to implement.","The most secure.","Allows testing for one branch.","Guarantees no data loss."], a:0},
+    {type:"mcq", q:"When comparing two alternatives, we choose the one with the higher ROI because:", options:["It provides a greater financial return for every pound invested.","It takes a longer time.","It is harder to implement.","It needs less maintenance only."], a:0},
+    {type:"mcq", q:"ERP is an integrated system that links different departments, while SCM focuses on:", options:["Supply chain, vendors, and warehouses.","Customer relationships only.","Employee salaries only.","Social media programs."], a:0},
+    {type:"mcq", q:"What is the role of the 'Financial Analyst' in IS projects?", options:["Evaluating economic feasibility and calculating project cash flows.","Writing program codes.","Repairing computers.","Designing user interfaces."], a:0},
+    {type:"mcq", q:"Which of the following is an example of an 'Intangible Benefit' of a system?", options:["Increasing customer satisfaction and improving company reputation.","Saving 50,000 EGP on paper.","Reducing the number of employees by 10%.","Reducing maintenance costs by 5%."], a:0},
+    {type:"mcq", q:"'Hybrid Cloud' is an ideal solution for companies that:", options:["Want to keep sensitive data locally while using the public cloud for routine tasks.","Want to get rid of all their hardware.","Do not have fast internet.","Work in the field of agriculture only."], a:0},
+    {type:"mcq", q:"'Total Cost of Ownership' (TCO) means:", options:["The sum of all costs (purchase, maintenance, training, support) throughout the system's life.","The purchase price of the software only.","The cost of electricity at the company's headquarters.","The selling price of the system to another competitor."], a:0},
+    {type:"mcq", q:"In the Decision Matrix, what does 'High Differentiation' mean?", options:["The system offers unique functions that make the company outperform its competitors.","The system is available in all competing companies.","The price of the system is very high.","The system needs a large number of servers."], a:0},
+    {type:"mcq", q:"Public Cloud is less expensive because the external provider:", options:["Divides infrastructure costs among a large number of subscribers.","Uses free software.","Does not provide technical support.","Does not update the systems."], a:0},
+    {type:"mcq", q:"Direct Conversion is sometimes called the 'Direct Cutover' strategy because:", options:["It cuts the relationship with the old system as soon as the new system is operational.","The internet is cut off from the company.","It leads to cutting employee salaries.","The wires of the old devices are cut."], a:0},
+    {type:"mcq", q:"Why do managers prefer a short 'Payback Period'?", options:["Because it increases company liquidity and reduces uncertainty risks.","To increase the number of project years.","Because it makes the system slower.","To avoid paying taxes."], a:0},
+    {type:"mcq", q:"Which of the following roles is responsible for 'Alignment' between IT and business?", options:["Chief Information Officer (CIO) and Senior Management.","Code Programmer.","Network Technician.","Data Entry Clerk."], a:0},
+    {type:"mcq", q:"'Scalability' is a major advantage in:", options:["Cloud Computing","Fixed In-house Development.","Locally installed COTS software.","Paper archiving."], a:0},
+    {type:"mcq", q:"In the ROI equation, what does 'Net Profit' represent?", options:["Total benefits minus all costs.","Total sales of the company.","The budget allocated for the project.","Added value for customers only."], a:0},
+    {type:"mcq", q:"Which conversion strategy is most suitable for a company with an 'Organizational Culture' that strongly resists change?", options:["Phased Conversion, because it gives employees time to learn and adapt.","Shocking Direct Conversion.","Completely stopping work.","Off-shore Outsourcing."], a:0},
+    {type:"mcq", q:"'Operational Expenditure' (OpEx) in an IT budget refers to:", options:["Daily and monthly expenses required to keep the system running.","Building a new information facility.","The price of purchasing a server for the first time.","The cost of establishing the company."], a:0},
+    {type:"mcq", q:"When a manager chooses 'Outsourcing,' they are usually seeking to:", options:["Focus on the company's core competencies.","Increase the number of employees.","Own the system's source code.","Increase administrative burdens."], a:0},
+    {type:"mcq", q:"According to the 'Information Systems Pyramid,' which system serves 'Senior Management' and helps in making unstructured decisions?", options:["Transaction Processing Systems (TPS).","Decision Support Systems (DSS).","Strategic Information Systems (SIS) or Executive Information Systems (EIS).","Office Automation Systems (OAS)."], a:2},
+    {type:"mcq", q:"In the context of IS, 'Strategic Alignment' means:", options:["Purchasing the latest hardware and technical equipment available in the market.","Ensuring harmony and consistency between technical goals and organizational goals.","Replacing humans completely with Artificial Intelligence.","Minimizing the IT department budget."], a:1},
+    {type:"mcq", q:"The relationship between 'Business Strategy' and 'IS Strategy' is:", options:["Conflicting (each strategy works in a different direction).","Subordinate (IS only follows business without influence).","Interactively reciprocal (each influences and is influenced by the other).","Formal (no real relationship exists between them)."], a:2},
+    {type:"mcq", q:"Which of the following levels in the IS pyramid is considered the 'Primary Source' of data that feeds other systems?", options:["Operational Level","Management Level","Knowledge Level","Strategic Level"], a:0},
+    {type:"mcq", q:"'Information Systems Strategy' (IS Strategy) primarily aims to:", options:["Determine the specifications of internal cables and networks.","Determine the application portfolio that supports the long-term business plan.","Repair daily computer malfunctions.","Increase the number of programmers in the company."], a:1},
+    {type:"mcq", q:"When a company decides on 'Cost Reduction' as a business strategy, the role of the aligned IS strategy is:", options:["Buying expensive computers for all employees.","Automating manual processes to reduce waste and improve operational efficiency.","Hiring a large number of programmers without an actual need.","Ignoring technology and focusing on manual labor only."], a:1},
+    {type:"mcq", q:"Which of the following models expresses strategic alignment that starts from 'Business Strategy' down to 'Information Infrastructure'?", options:["Top-Down Alignment","Bottom-Up Alignment","Random Alignment","Vendor-only Alignment"], a:0},
+    {type:"mcq", q:"Strategic Alignment is 'successful' if information systems lead to:", options:["Increasing the complexity of administrative procedures.","Achieving organization goals and strategic objectives effectively.","Consuming the organization's entire budget on software.","Separating technical management from senior management."], a:1},
+    {type:"mcq", q:"'Information Systems Strategy' (IS Strategy) primarily focuses on:", options:["'What' applications and data are needed to support the business?","'How' to repair a broken computer screen?","'When' to pay the electricity bill?","'Who' is the ideal employee in the reception department?"], a:0},
+    {type:"mcq", q:"In the interactive relationship between the two strategies, Information Systems can:", options:["Only impose constraints on managers' dreams.","Open horizons and new business strategies that were not possible before (e.g., e-commerce).","Be just a tool for writing and printing.","Completely eliminate the need for a business strategy."], a:1},
+    {type:"mcq", q:"What is the primary objective of using Information Systems?", options:["Improving administrative processes.","Reducing costs.","Supporting decision-making.","All of the above."], a:3},
+    {type:"mcq", q:"Which of the following represents an application of the Internet of Things (IoT)?", options:["Home appliances connected to the internet.","Data analysis using Artificial Intelligence.","Creating databases.","Using Decision Support Systems."], a:0},
+    {type:"mcq", q:"What is the main goal of Cybersecurity?", options:["Improving productivity.","Protecting data and systems.","Reducing costs.","Increasing internet speed."], a:1},
+    {type:"mcq", q:"Which of the following is used to analyze spatial and geographic data?", options:["MIS","GIS","ERP","CRM"], a:1},
+    {type:"mcq", q:"Which system is used to manage daily operations such as invoicing?", options:["DSS","TPS","ERP","IoT"], a:1},
+    {type:"mcq", q:"What is the fundamental element of a SWOT analysis?", options:["Organizational vision.","Identifying Strengths, Weaknesses, Opportunities, and Threats.","Using Artificial Intelligence.","Building a database."], a:1},
+    {type:"mcq", q:"Knowledge Management Systems (KMS) focus on:", options:["Providing financial reports.","Storing and sharing knowledge.","Process automation.","Improving customer relationships."], a:1},
+    {type:"mcq", q:"Which system supports strategic decision-making?", options:["TPS","DSS","IoT","CRM"], a:1},
+    {type:"mcq", q:"Which of the following is considered part of the future trends in Information Systems?", options:["Artificial Intelligence (AI).","Traditional printing.","Reducing internet usage.","Manual data entry."], a:0},
+    {type:"mcq", q:"What is Return on Investment (ROI) in Information Systems?", options:["Measuring the financial performance of systems.","Defining the database.","Supporting operational processes.","Creating websites."], a:0},
+    {type:"mcq", q:"Which system integrates business processes into a single platform?", options:["ERP","DSS","GIS","CRM"], a:0},
+    {type:"mcq", q:"Automation focuses on:", options:["Completely replacing workers.","Executing tasks automatically.","Improving relationships between departments.","Reducing data."], a:1},
+    {type:"mcq", q:"Which information system is used for market analysis?", options:["CRM","GIS","TPS","ERP"], a:0},
+    {type:"mcq", q:"Which system is used to analyze daily operations?", options:["DSS","TPS","ERP","IoT"], a:1},
+    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)?", options:["Storing data only.","Supporting decision-making.","Process automation.","Resource management."], a:1},
+    {type:"mcq", q:"Which system helps improve product quality in factories?", options:["IoT","DSS","KMS","GIS"], a:0},
+    {type:"mcq", q:"Which cybersecurity technology protects data from unauthorized access?", options:["Encryption.","Cloud storage.","GIS systems.","Process improvement."], a:0},
+    {type:"mcq", q:"ERP systems are used to manage:", options:["Operational processes only.","Different departments in an integrated manner.","Data security only.","Geographic analytics."], a:1},
+    {type:"mcq", q:"Which technology is used to improve energy efficiency in smart buildings?", options:["IoT","GIS","ERP","DSS"], a:0},
+    {type:"mcq", q:"What is a Customer Relationship Management (CRM) system?", options:["A system for analyzing geographic data.","A system for improving relationships with customers.","A system for cloud storage.","A system for supporting strategic decisions."], a:1},
+    {type:"mcq", q:"Which of the following is used to improve interaction between connected devices?", options:["IoT","KMS","DSS","ERP"], a:0},
+    {type:"mcq", q:"What is the goal of using Artificial Intelligence (AI) in Information Systems?", options:["Improving human decision-making.","Reducing the amount of data used.","Providing financial reports only.","Building processing systems."], a:0},
+    {type:"mcq", q:"Which of the following is used to analyze data and derive decisions?", options:["DSS","TPS","IoT","ERP"], a:0},
+    {type:"mcq", q:"Which system manages the employee database and payroll?", options:["ERP","TPS","DSS","MIS"], a:0},
+    {type:"mcq", q:"Automation contributes to:", options:["Improving execution speed and reducing errors.","Increasing reliance on human workers.","Reducing costs only.","Improving relationships between employees."], a:0},
+    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)? (Strategic)", options:["Human Resource Management.","Supporting strategic decision-making.","Analyzing geographic data.","Improving customer relationships."], a:1},
+    {type:"mcq", q:"Which of the following is used to analyze spatial and geographic data?", options:["MIS","GIS","CRM","IoT"], a:1},
+    {type:"mcq", q:"Which system assists in managing daily operations?", options:["DSS","ERP","TPS","KMS"], a:2},
+    {type:"mcq", q:"Which of the following is considered part of the Internet of Things (IoT)?", options:["Connected home appliances.","Creating databases.","Decision Support Systems.","Geographic data analysis."], a:0},
+    {type:"mcq", q:"Which system is used to improve relationships with customers?", options:["CRM","GIS","ERP","TPS"], a:0},
+    {type:"mcq", q:"Which system integrates business processes into a single platform?", options:["ERP","DSS","IoT","MIS"], a:0},
+    {type:"mcq", q:"Which of the following is a technology that contributes to cybersecurity?", options:["Encryption.","Improving operational processes.","Creating administrative reports.","Geographic data analysis."], a:0},
+    {type:"mcq", q:"What is the objective of Automation?", options:["Increasing reliance on human workers.","Executing tasks automatically.","Improving relationships between departments.","Reducing costs only."], a:1},
+    {type:"mcq", q:"Which system is used to analyze data and extract decisions?", options:["DSS","IoT","ERP","GIS"], a:0},
+    {type:"mcq", q:"What is Return on Investment (ROI) in Information Systems?", options:["Measuring system performance.","Data analysis.","Creating websites.","Customer management."], a:0},
+    {type:"mcq", q:"Knowledge Management Systems (KMS) contribute to:", options:["Improving organizational learning.","Geographic data analysis.","Managing operational processes.","Automating manual tasks."], a:0},
+    {type:"mcq", q:"What is the primary function of Management Information Systems (MIS)?", options:["Improving customer relationships.","Supporting administrative decision-making.","Managing operational processes.","Geographic data analysis."], a:1},
+    {type:"mcq", q:"Which of the following is considered part of the future trends in Information Systems?", options:["Artificial Intelligence (AI).","Reducing internet usage.","Traditional printing.","Manual data entry."], a:0},
+    {type:"mcq", q:"Which system is used for inventory management?", options:["ERP","CRM","GIS","DSS"], a:0},
+    {type:"mcq", q:"What is the primary objective of Decision Support Systems (DSS)?", options:["Providing supplementary reports only.","Supporting decision-making.","Storing data.","Improving relationships between departments."], a:1},
+    {type:"mcq", q:"Which of the following is used to improve energy efficiency in smart buildings?", options:["IoT","GIS","ERP","DSS"], a:0},
+    {type:"mcq", q:"Which system helps organizations improve internal team collaboration?", options:["CRM","KMS","GIS","ERP"], a:1},
+    {type:"mcq", q:"Which system is used to provide accurate and analytical reports to support management?", options:["DSS","MIS","TPS","ERP"], a:1},
+    {type:"mcq", q:"What is the primary objective of Encryption technology?", options:["Improving productivity.","Protecting data.","Reducing the time needed for process execution.","Geographic data analysis."], a:1},
+    {type:"mcq", q:"Which system is used in daily operations such as invoicing and payroll?", options:["ERP","TPS","MIS","GIS"], a:1},
+    {type:"mcq", q:"Which system integrates all organizational data into one system?", options:["ERP","GIS","TPS","CRM"], a:0},
+    {type:"mcq", q:"Which of the following is considered part of Enterprise Resource Planning (ERP) systems?", options:["Inventory management.","Automating operational processes.","Improving customer relationships.","Geographic data analysis."], a:0},
+    {type:"mcq", q:"What is Internet of Things (IoT) technology?", options:["Geographic data analysis.","Connecting devices via the internet.","Manual data storage.","Providing decision support reports."], a:1},
+    {type:"mcq", q:"Which system is used to analyze geographic data?", options:["GIS","ERP","DSS","KMS"], a:0},
+    {type:"mcq", q:"Which of the following is considered part of Cybersecurity?", options:["Inventory management.","Encryption.","Providing administrative reports.","Improving customer relationships."], a:1},
+    {type:"mcq", q:"What is the goal of Knowledge Management Systems (KMS)?", options:["Improving employee productivity.","Supporting decision-making.","Sharing knowledge within the organization.","Geographic data analysis."], a:2},
+    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)?", options:["Improving relationships between departments.","Providing recommendations for effective decision-making.","Storing data.","Creating customer databases."], a:1},
+    {type:"mcq", q:"Which system is used to improve relationships with customers?", options:["ERP","CRM","GIS","IoT"], a:1},
+    {type:"mcq", q:"Which of the following is considered part of Transaction Processing Systems (TPS)?", options:["Payroll management.","Data analysis.","Improving customer relationships.","Providing decision support reports."], a:0},
+    {type:"mcq", q:"Which system is used to analyze geographic data?", options:["GIS","TPS","DSS","ERP"], a:0},
+    {type:"mcq", q:"What is the primary function of Automation systems?", options:["Improving relationships between departments.","Executing tasks automatically.","Reducing data usage.","Improving network performance."], a:1},
+    {type:"mcq", q:"What is the primary goal of Internet of Things (IoT) technology?", options:["Improving relationships between departments.","Improving device communication and data exchange.","Providing accurate financial reports.","Managing daily operations."], a:1},
+    {type:"mcq", q:"Which system supports long-term decisions?", options:["TPS","ERP","DSS","GIS"], a:2},
+    {type:"mcq", q:"Which system contributes to improving organizational productivity?", options:["KMS","GIS","TPS","DSS"], a:0},
+    {type:"mcq", q:"'Alpha Trading' faces challenges in managing customer data due to reliance on manual methods. The company noticed a decline in customer satisfaction caused by delays in responding to inquiries and issues in order management. Which system do you advise the company to implement?", options:["ERP","CRM (Customer Relationship Management)","GIS","TPS"], a:1},
+    {type:"mcq", q:"A modern hospital faces challenges in managing patient records and accurately tracking their conditions. Which system is most suitable to meet the hospital's needs?", options:["TPS","ERP","KMS","HIS (Health Information Systems)"], a:3},
+    {type:"mcq", q:"An educational institution wants to provide remote learning services to students using modern technology. Which system can the institution implement to achieve these goals?", options:["TPS","LMS (Learning Management Systems)","DSS","CRM"], a:1},
+    {type:"mcq", q:"A modern farm wants to use technology to analyze soil and weather data to improve crop yields and reduce costs. Which system is recommended to achieve this goal?", options:["CRM","GIS (Geographic Information Systems)","DSS","TPS"], a:1}
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+let filteredQuestions = [...questions];
+
+function renderQuestion() {
+    const q = filteredQuestions[currentIndex];
+    if (!q) return;
+    const container = document.getElementById('questionContainer');
+    const globalIdx = questions.indexOf(q);
+    const userAnswer = userAnswers[globalIdx];
+    
+    let optionsHTML = '';
+    if (q.type === 'tf') {
+        optionsHTML = `<div class="tf-options">
+            <button class="option" data-val="true" onclick="selectAnswer(${globalIdx}, true)">✓ True</button>
+            <button class="option" data-val="false" onclick="selectAnswer(${globalIdx}, false)">✗ False</button>
+        </div>`;
+    } else {
+        optionsHTML = '<div class="options">' + q.options.map((opt, i) => 
+            `<button class="option" data-val="${i}" onclick="selectAnswer(${globalIdx}, ${i})">${String.fromCharCode(97+i)}) ${opt}</button>`
+        ).join('') + '</div>';
+    }
+    
+    container.innerHTML = `
+        <div class="q-number">Question ${currentIndex + 1} <span class="q-type">${q.type === 'tf' ? 'True/False' : 'Multiple Choice'}</span></div>
+        <div class="q-text">${q.q}</div>
+        ${optionsHTML}
+        <div class="feedback" id="feedback"></div>
+    `;
+    
+    if (userAnswer !== undefined) {
+        showResult(globalIdx, userAnswer);
+    }
+    
+    document.getElementById('qCounter').textContent = `${currentIndex + 1} / ${filteredQuestions.length}`;
+    document.getElementById('prevBtn').disabled = currentIndex === 0;
+    document.getElementById('nextBtn').disabled = currentIndex === filteredQuestions.length - 1;
+    updateStats();
+}
+
+function selectAnswer(globalIdx, val) {
+    if (userAnswers[globalIdx] !== undefined) return;
+    userAnswers[globalIdx] = val;
+    showResult(globalIdx, val);
+    updateStats();
+}
+
+function showResult(globalIdx, val) {
+    const q = questions[globalIdx];
+    const isCorrect = (q.type === 'tf') ? (val === q.a) : (val === q.a);
+    const buttons = document.querySelectorAll('.option');
+    
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        const btnVal = btn.dataset.val;
+        if (q.type === 'tf') {
+            if (btnVal === String(q.a)) btn.classList.add('show-correct');
+            if (btnVal === String(val) && val !== q.a) btn.classList.add('wrong');
+        } else {
+            if (parseInt(btnVal) === q.a) btn.classList.add('show-correct');
+            if (parseInt(btnVal) === val && val !== q.a) btn.classList.add('wrong');
+        }
+    });
+    
+    const feedback = document.getElementById('feedback');
+    feedback.classList.add('show', isCorrect ? 'correct' : 'wrong');
+    let msg = isCorrect ? '✅ Correct!' : '❌ Incorrect.';
+    if (q.type === 'tf') {
+        msg += ` The correct answer is <strong>${q.a ? 'True' : 'False'}</strong>.`;
+    } else {
+        msg += ` The correct answer is <strong>${String.fromCharCode(97+q.a)}) ${q.options[q.a]}</strong>.`;
+    }
+    if (q.exp) msg += `<br><em>${q.exp}</em>`;
+    feedback.innerHTML = msg;
+}
+
+function updateStats() {
+    let correct = 0, wrong = 0;
+    Object.keys(userAnswers).forEach(idx => {
+        const q = questions[idx];
+        if (userAnswers[idx] === q.a) correct++;
+        else wrong++;
+    });
+    const total = correct + wrong;
+    document.getElementById('answeredCount').textContent = total;
+    document.getElementById('correctCount').textContent = correct;
+    document.getElementById('wrongCount').textContent = wrong;
+    document.getElementById('scorePercent').textContent = total > 0 ? Math.round((correct/total)*100) + '%' : '0%';
+    document.getElementById('progressFill').style.width = ((currentIndex + 1) / filteredQuestions.length * 100) + '%';
+}
+
+function nextQuestion() {
+    if (currentIndex < filteredQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    }
+}
+
+function prevQuestion() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function resetQuiz() {
+    if (confirm('Are you sure you want to reset all answers?')) {
+        userAnswers = {};
+        currentIndex = 0;
+        renderQuestion();
+    }
+}
+
+function randomQuestion() {
+    currentIndex = Math.floor(Math.random() * filteredQuestions.length);
+    renderQuestion();
+}
+
+document.getElementById('filterSelect').addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (val === 'all') filteredQuestions = [...questions];
+    else if (val === 'tf') filteredQuestions = questions.filter(q => q.type === 'tf');
+    else filteredQuestions = questions.filter(q => q.type === 'mcq');
+    currentIndex = 0;
+    renderQuestion();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextQuestion();
+    if (e.key === 'ArrowLeft') prevQuestion();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
