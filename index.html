@@ -324,21 +324,19 @@
 
     <section class="card">
       <div class="search-row">
-        <input id="searchInput" type="text" placeholder="Search questions..." oninput="applyFilters()" />
+  <select id="typeFilter" onchange="applyFilters()">
+    <option value="all">All Types</option>
+    <option value="tf">True / False</option>
+    <option value="mcq">MCQ</option>
+  </select>
 
-        <select id="typeFilter" onchange="applyFilters()">
-          <option value="all">All Types</option>
-          <option value="tf">True / False</option>
-          <option value="mcq">MCQ</option>
-        </select>
-
-        <select id="statusFilter" onchange="applyFilters()">
-          <option value="all">All Status</option>
-          <option value="unanswered">Unanswered</option>
-          <option value="answered">Answered</option>
-          <option value="wrong">Wrong Only</option>
-        </select>
-      </div>
+  <select id="statusFilter" onchange="applyFilters()">
+    <option value="all">All Status</option>
+    <option value="unanswered">Unanswered</option>
+    <option value="answered">Answered</option>
+    <option value="wrong">Wrong Only</option>
+  </select>
+</div>
 
       <div class="progress-wrap">
         <div id="progressBar" class="progress-bar"></div>
@@ -510,6 +508,86 @@
         question: "The time elasticity of critical activities is zero.",
         correct: "True"
       },
+      {
+  type: "tf",
+  section: "True or False",
+  number: "Question 19",
+  question: "During the Forward Pass calculation in a network diagram, if an activity receives multiple incoming arrows, you should choose the smallest Early Finish (EF) time of the preceding activities to be its Early Start (ES).",
+  correct: "False",
+  explanation: "When moving forward (Forward Pass), if multiple paths merge, you must select the largest (maximum) Early Finish (EF) time of the preceding activities, because the current activity cannot start until ALL its predecessors are entirely finished."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 20",
+  question: "A Dummy Activity is represented by a dashed arrow and is crucial for showing logical dependencies, despite consuming zero time and zero resources.",
+  correct: "True",
+  explanation: "Dummy activities are used strictly to maintain the correct logical sequence in complex network diagrams without affecting the project's total duration or budget."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 21",
+  question: "If the total variance of the critical path increases significantly, the probability of finishing the project on a strict, early target date will generally decrease.",
+  correct: "True",
+  explanation: "A higher variance means there is a greater degree of uncertainty and risk in the time estimates, making it much harder to guarantee completion by an aggressive target date."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 22",
+  question: "In MS-Project, setting a \"Start-to-Start\" (SS) relationship means that the successor task cannot finish until the predecessor task starts.",
+  correct: "False",
+  explanation: "A Start-to-Start (SS) relationship means the successor task cannot *start* unless the predecessor task *starts*."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 23",
+  question: "When calculating the Expected Time (E) in the PERT method, the highest mathematical weight is given to the Optimistic time (O).",
+  correct: "False",
+  explanation: "The highest weight is given to the Probable time (M), which is multiplied by 4 in the formula: E = (O + 4M + P) / 6."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 24",
+  question: "The standard deviation of the entire project is calculated by simply adding the standard deviations of all the critical activities together.",
+  correct: "False",
+  explanation: "You cannot directly add standard deviations. You must sum the *variances* ($\\sigma^2$) of the critical activities first, and then take the square root of that total sum to find the project's standard deviation."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 25",
+  question: "According to the project management cycle, the \"Resource Management\" element focuses exclusively on securing financial and monetary assets.",
+  correct: "False",
+  explanation: "Resource management focuses on identifying and securing the appropriate *operational* and *human* resources fundamental to developing the project plan. Financial aspects fall under \"Budgeting\"."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 26",
+  question: "If a non-critical activity is delayed by a number of days that is exactly equal to its Total Slack, the overall project duration will remain unchanged.",
+  correct: "True",
+  explanation: "Total Slack is the maximum amount of time a task can be delayed without delaying the project. If the delay does not exceed the slack, the project end date is safe (though the activity's slack will now become zero, making it critical)."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 27",
+  question: "The 'Total Slack' column in MS-Project automatically calculates the flexibility of tasks, eliminating the need to manually subtract Early Start from Late Start.",
+  correct: "True",
+  explanation: "MS-Project automates this calculation. Any task showing a Total Slack of \"0 days\" is automatically recognized by the software as a critical activity."
+},
+{
+  type: "tf",
+  section: "True or False",
+  number: "Question 28",
+  question: "According to the project management elements, \"Reports\" are primarily drafted during the initial planning stage before any project execution begins.",
+  correct: "False",
+  explanation: "Reports are a continuous tracking tool used during project execution to illustrate the current status, progress, and relationship between the timeframe and expenses."
+},
 
       {
         type: "mcq",
@@ -627,7 +705,7 @@
           { label: "b", text: "A-B-F-G-H" },
           { label: "c", text: "A-C-F-G-H" }
         ],
-        correct: "a"
+        correct: "b"
       },
       {
         type: "mcq",
@@ -1301,7 +1379,147 @@
         ],
         correct: "b",
         explanation: "A task with multiple predecessors requires all listed activities to finish before it can begin. Standard dependency logic requires all specified predecessors to be complete."
-      }
+      },
+      {
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 11",
+  question: "During a Backward Pass calculation, if an activity is a predecessor to three different subsequent activities, how is its Late Finish (LF) determined?",
+  options: [
+    { label: "a", text: "It is the largest Late Start (LS) of the succeeding activities." },
+    { label: "b", text: "It is the smallest Late Start (LS) of the succeeding activities." },
+    { label: "c", text: "It is the sum of all succeeding Late Starts." },
+    { label: "d", text: "It is set to zero automatically." }
+  ],
+  correct: "b",
+  explanation: "When moving backwards, if paths split, the rule is to take the minimum (smallest) Late Start of the succeeding activities to ensure none of the subsequent tasks are delayed."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 12",
+  question: "Which of the following best describes the fundamental difference between the Critical Path Method (CPM) and the Program Evaluation and Review Technique (PERT)?",
+  options: [
+    { label: "a", text: "CPM is used for construction projects, while PERT is exclusively for software development." },
+    { label: "b", text: "CPM does not utilize network diagrams, whereas PERT relies on them heavily." },
+    { label: "c", text: "CPM uses single, deterministic time estimates, while PERT uses three probabilistic time estimates." },
+    { label: "d", text: "CPM calculates project cost, while PERT calculates project quality." }
+  ],
+  correct: "c",
+  explanation: "CPM assumes time is known with certainty (one estimate), while PERT handles uncertainty by using Optimistic, Probable, and Pessimistic time estimates."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 13",
+  question: "An activity has an optimistic time of 4, a probable time of 7, and a pessimistic time of 16. What is its Expected Time (E) and Variance ($\\sigma^2$)?",
+  options: [
+    { label: "a", text: "E = 8, Variance = 2" },
+    { label: "b", text: "E = 8, Variance = 4" },
+    { label: "c", text: "E = 9, Variance = 2" },
+    { label: "d", text: "E = 7, Variance = 4" }
+  ],
+  correct: "b",
+  explanation: "Expected Time $E = (4 + (4 \\times 7) + 16) / 6 = 48 / 6 = 8$. Standard Deviation $\\sigma = (16 - 4) / 6 = 2$. Variance is the square of standard deviation, so $2^2 = 4$."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 14",
+  question: "In MS-Project, if you want to quickly identify all tasks that will immediately delay the project finish date if they slip, which feature or filter should you use?",
+  options: [
+    { label: "a", text: "The Milestones filter" },
+    { label: "b", text: "The Summary Tasks filter" },
+    { label: "c", text: "The Overallocated Resources filter" },
+    { label: "d", text: "The Critical filter" }
+  ],
+  correct: "d",
+  explanation: "Applying the \"Critical\" filter in MS-Project isolates the tasks on the critical path (tasks with zero Total Slack), highlighting the most time-sensitive activities."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 15",
+  question: "When calculating the probability of completing a project within a specific target time, what does the denominator in the final formula represent?",
+  options: [
+    { label: "a", text: "The total expected time of the project." },
+    { label: "b", text: "The standard deviation of the overall critical path." },
+    { label: "c", text: "The sum of standard deviations of all tasks." },
+    { label: "d", text: "The slack time of the first activity." }
+  ],
+  correct: "b",
+  explanation: "The formula is $Z = (Target Time - Expected Time) / \\text{Standard Deviation}$. The denominator must be the total standard deviation of the critical path (which is the square root of the critical path's total variance)."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 16",
+  question: "If a project manager notices that actual task completions are lagging behind the planned objectives, which management element is primarily being utilized to identify this gap?",
+  options: [
+    { label: "a", text: "Resource forecasting" },
+    { label: "b", text: "Planning" },
+    { label: "c", text: "Tracking progress (Control)" },
+    { label: "d", text: "Scheduling" }
+  ],
+  correct: "c",
+  explanation: "Control (tracking progress) involves examining and comparing actual real-world performance results against the planned objectives set during the scheduling phase."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 17",
+  question: "According to the formula $\\sigma = \\frac{P - O}{6}$, what does a very large difference between the pessimistic and optimistic time estimates indicate?",
+  options: [
+    { label: "a", text: "The task is definitely on the critical path." },
+    { label: "b", text: "A higher degree of accuracy in the project manager's estimates." },
+    { label: "c", text: "A higher degree of uncertainty and risk regarding the task's duration." },
+    { label: "d", text: "The probable time (M) was calculated incorrectly." }
+  ],
+  correct: "c",
+  explanation: "A wider gap between the best-case (O) and worst-case (P) scenarios results in a larger standard deviation, which directly indicates higher uncertainty in the estimation."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 18",
+  question: "Which phase of project scheduling specifically involves converting the initial abstract plan into a clear, chronological timeline for execution?",
+  options: [
+    { label: "a", text: "Activity scheduling" },
+    { label: "b", text: "Budgeting" },
+    { label: "c", text: "Procurement" },
+    { label: "d", text: "Reporting" }
+  ],
+  correct: "a",
+  explanation: "While planning outlines what needs to be done, \"Activity scheduling\" (as a stage of Project Scheduling) is the actual process of mapping those activities onto a timeline, often using Gantt charts."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 19",
+  question: "In project budgeting, predicting the impact of economic changes over time is crucial. Which specific forecasting step addresses this?",
+  options: [
+    { label: "a", text: "Forecasting the cost of resources when they are used." },
+    { label: "b", text: "Forecasting the impact of inflation on resources." },
+    { label: "c", text: "Forecasting the potential risks while acquiring resources." },
+    { label: "d", text: "Forecasting when human resources will be needed." }
+  ],
+  correct: "b",
+  explanation: "Forecasting inflation is the 4th step in project budgeting, ensuring that the budget remains accurate even if the costs of materials or resources rise over the project's lifecycle."
+},
+{
+  type: "mcq",
+  section: "Multiple Choice Questions",
+  number: "Question 20",
+  question: "If you have an activity with a Late Finish (LF) of 20 and a duration of 5, and it has an Early Start (ES) of 12. What is its Slack Time?",
+  options: [
+    { label: "a", text: "8" },
+    { label: "b", text: "0" },
+    { label: "c", text: "3" },
+    { label: "d", text: "5" }
+  ],
+  correct: "c",
+  explanation: "First, find the Late Start (LS): $LS = LF - \\text{Duration} = 20 - 5 = 15$. Then, Slack Time $= LS - ES = 15 - 12 = 3$. (Alternatively, $EF = 12 + 5 = 17$, Slack $= 20 - 17 = 3$)."
+}
     ];
 
     let allQuestions = [];
