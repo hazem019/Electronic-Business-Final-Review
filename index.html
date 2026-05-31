@@ -1,582 +1,1558 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IS Strategy - Quiz Review</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
-    color: #333;
-}
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    overflow: hidden;
-}
-header {
-    background: linear-gradient(135deg, #2c3e50, #4a6378);
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-header h1 { font-size: 28px; margin-bottom: 8px; }
-header p { opacity: 0.9; font-size: 14px; }
-.controls {
-    padding: 20px 30px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e0e0e0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-}
-.controls select, .controls button {
-    padding: 8px 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    background: white;
-}
-.controls button {
-    background: #667eea;
-    color: white;
-    border: none;
-    transition: background 0.2s;
-}
-.controls button:hover { background: #5568d3; }
-.progress-bar {
-    height: 8px;
-    background: #e0e0e0;
-    overflow: hidden;
-}
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #43cea2, #185a9d);
-    transition: width 0.3s;
-    width: 0%;
-}
-.stats {
-    padding: 15px 30px;
-    background: #f0f4f8;
-    display: flex;
-    justify-content: space-around;
-    font-size: 14px;
-    border-bottom: 1px solid #e0e0e0;
-}
-.stat-item { text-align: center; }
-.stat-value { font-size: 20px; font-weight: bold; color: #2c3e50; }
-.stat-label { color: #666; font-size: 12px; }
-.question-container {
-    padding: 30px;
-    min-height: 400px;
-}
-.q-number {
-    color: #667eea;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-.q-type {
-    display: inline-block;
-    padding: 3px 10px;
-    background: #667eea;
-    color: white;
-    border-radius: 12px;
-    font-size: 11px;
-    margin-left: 10px;
-}
-.q-text {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    color: #2c3e50;
-    font-weight: 500;
-}
-.options { display: flex; flex-direction: column; gap: 10px; }
-.option {
-    padding: 15px 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: white;
-    text-align: left;
-    font-size: 15px;
-    line-height: 1.4;
-}
-.option:hover:not(:disabled) {
-    border-color: #667eea;
-    background: #f5f7ff;
-    transform: translateX(5px);
-}
-.option:disabled { cursor: not-allowed; }
-.option.correct {
-    background: #d4edda;
-    border-color: #28a745;
-    color: #155724;
-}
-.option.wrong {
-    background: #f8d7da;
-    border-color: #dc3545;
-    color: #721c24;
-}
-.option.show-correct {
-    background: #d4edda;
-    border-color: #28a745;
-    color: #155724;
-    font-weight: 600;
-}
-.feedback {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.5;
-    display: none;
-}
-.feedback.show { display: block; }
-.feedback.correct {
-    background: #d4edda;
-    color: #155724;
-    border-left: 4px solid #28a745;
-}
-.feedback.wrong {
-    background: #f8d7da;
-    color: #721c24;
-    border-left: 4px solid #dc3545;
-}
-.navigation {
-    padding: 20px 30px;
-    background: #f8f9fa;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #e0e0e0;
-}
-.nav-btn {
-    padding: 10px 25px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-.nav-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-.nav-btn.prev { background: #6c757d; color: white; }
-.nav-btn.next { background: #667eea; color: white; }
-.nav-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-.q-counter { font-weight: 600; color: #2c3e50; }
-.tf-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-@media (max-width: 600px) {
-    .tf-options { grid-template-columns: 1fr; }
-    .stats { flex-wrap: wrap; gap: 10px; }
-    header h1 { font-size: 22px; }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Computer Applications in Project Management Quiz</title>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]],
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]]
+      },
+      svg: {
+        fontCache: "global"
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 28px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+      margin-bottom: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+      font-size: 15px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      color: var(--primary);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    input,
+    select {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 15px;
+      outline: none;
+    }
+
+    input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    select {
+      min-width: 170px;
+    }
+
+    .progress-wrap {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: 0.3s;
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .section-title {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .question-text {
+      font-size: 20px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .context-table {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.35;
+      margin: 0 0 20px;
+      white-space: pre;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer-btn {
+      text-align: left;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .answer-btn:hover:not(:disabled) {
+      background: #eff6ff;
+      border-color: var(--primary);
+    }
+
+    .answer-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.98;
+    }
+
+    .answer-btn.correct {
+      background: #dcfce7;
+      border-color: var(--success);
+      color: #14532d;
+    }
+
+    .answer-btn.wrong {
+      background: #fee2e2;
+      border-color: var(--danger);
+      color: #7f1d1d;
+    }
+
+    .feedback {
+      margin-top: 16px;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #14532d;
+      border: 1px solid #86efac;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #7f1d1d;
+      border: 1px solid #fca5a5;
+    }
+
+    .feedback .detail {
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 12px;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
-    <header>
-        <h1>📚 Information Systems Strategy</h1>
-        <p>The Final Lecture: Comprehensive Review Quiz</p>
-    </header>
-    <div class="controls">
-        <select id="filterSelect">
-            <option value="all">All Questions</option>
-            <option value="tf">True/False Only</option>
-            <option value="mcq">Multiple Choice Only</option>
+  <header>
+    <h1>Computer Applications in Project Management Quiz</h1>
+    <p>Answer the question and instantly see the correct answer</p>
+  </header>
+
+  <main>
+    <section class="stats">
+      <div class="stat">
+        <strong id="totalCount">0</strong>
+        <span>Total Questions</span>
+      </div>
+      <div class="stat">
+        <strong id="answeredCount">0</strong>
+        <span>Answered</span>
+      </div>
+      <div class="stat">
+        <strong id="scoreCount">0</strong>
+        <span>Correct</span>
+      </div>
+      <div class="stat">
+        <strong id="percentCount">0%</strong>
+        <span>Score</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="search-row">
+        <input id="searchInput" type="text" placeholder="Search questions..." oninput="applyFilters()" />
+
+        <select id="typeFilter" onchange="applyFilters()">
+          <option value="all">All Types</option>
+          <option value="tf">True / False</option>
+          <option value="mcq">MCQ</option>
         </select>
-        <button onclick="resetQuiz()">🔄 Reset Quiz</button>
-        <button onclick="randomQuestion()">🎲 Random</button>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="stats">
-        <div class="stat-item">
-            <div class="stat-value" id="answeredCount">0</div>
-            <div class="stat-label">Answered</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="correctCount" style="color:#28a745;">0</div>
-            <div class="stat-label">Correct</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="wrongCount" style="color:#dc3545;">0</div>
-            <div class="stat-label">Wrong</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value" id="scorePercent">0%</div>
-            <div class="stat-label">Score</div>
-        </div>
-    </div>
-    <div class="question-container" id="questionContainer"></div>
-    <div class="navigation">
-        <button class="nav-btn prev" id="prevBtn" onclick="prevQuestion()">← Previous</button>
-        <span class="q-counter" id="qCounter">1 / 1</span>
-        <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Next →</button>
-    </div>
-</div>
 
-<script>
-const questions = [
-    // TRUE/FALSE QUESTIONS
-    {type:"tf", q:"In-sourcing is always the best alternative to reduce administrative and operational costs in an organization.", a:false, exp:"In-sourcing usually involves higher costs compared to some outsourcing options."},
-    {type:"tf", q:"'Competitive Advantage' and high confidentiality are among the most important drivers for choosing an 'In-house Development' strategy.", a:true, exp:""},
-    {type:"tf", q:"Outsourcing means relying on the internal IT team within the organization to develop systems.", a:false, exp:"Outsourcing refers to contracting with an external company or third-party provider."},
-    {type:"tf", q:"Strategic Outsourcing aims to build a long-term partnership with the vendor to enhance efficiency.", a:true, exp:""},
-    {type:"tf", q:"'Hidden Costs' in outsourcing are associated with coordinating, managing, and monitoring the external vendor.", a:true, exp:""},
-    {type:"tf", q:"The term 'Vendor Lock-in' means that the organization has gained full control over the external vendor.", a:false, exp:"It means the organization has become overly dependent on the vendor and finds it difficult to switch to another."},
-    {type:"tf", q:"A Service Level Agreement (SLA) is a contract that defines technical and financial standards, as well as penalties between the organization and the service provider.", a:true, exp:""},
-    {type:"tf", q:"Off-shore Outsourcing is characterized by easy communication and cultural alignment between the company and the vendor.", a:false, exp:"It is characterized by communication difficulties and differences in language and culture."},
-    {type:"tf", q:"Near-shore Outsourcing refers to contracting with companies in countries like China and Japan to benefit from currency differences.", a:false, exp:"This is considered Off-shore; Near-shore is contracting with companies in neighboring countries."},
-    {type:"tf", q:"In the Strategic Decision Matrix, if strategic importance is high and differentiation is high, we choose Off-the-shelf software (COTS).", a:false, exp:"In this case, we choose In-house development/In-sourcing."},
-    {type:"tf", q:"The Strategic Decision Matrix is a 'subjective' tool that depends only on the manager's personal whims.", a:false, exp:"It is an analytical tool based on strategic importance and differentiation."},
-    {type:"tf", q:"Commercial Off-The-Shelf (COTS) software is characterized by being quick to implement and proven by other users.", a:true, exp:""},
-    {type:"tf", q:"The 'Make' decision (building the system internally) is the best option if the system is available as high-quality COTS.", a:false, exp:"Buying COTS would be more efficient and cost-effective in this case."},
-    {type:"tf", q:"Customized software requires the organization to change its business processes to align with the software's logic.", a:false, exp:"Customized software is designed specifically to meet the company's unique needs."},
-    {type:"tf", q:"COTS software requires the organization to change its business processes to align with the software's logic.", a:true, exp:""},
-    {type:"tf", q:"Cloud Computing contributes to transforming Capital Expenditures (CapEx) into Operational Expenditures (OpEx).", a:true, exp:""},
-    {type:"tf", q:"Cloud computing is an unsuitable option for startups due to its high capital costs.", a:false, exp:"It is ideal for startups as it requires little to no upfront capital expenditure."},
-    {type:"tf", q:"In Cloud Computing, the term IaaS refers to providing infrastructure such as servers and storage as a service.", a:true, exp:""},
-    {type:"tf", q:"Public Cloud is more private and secure than Private Cloud.", a:false, exp:"Private Cloud is more secure as it is dedicated to a single organization."},
-    {type:"tf", q:"Private Cloud relies on sharing technical resources with other companies to reduce costs.", a:false, exp:"It is dedicated to a single organization."},
-    {type:"tf", q:"SaaS is an abbreviation for 'System as a Service' and means renting physical hardware over the internet.", a:false, exp:"SaaS stands for 'Software as a Service'."},
-    {type:"tf", q:"Scalability in Cloud Computing refers to the system's ability to grow or shrink according to business needs with a click of a button.", a:true, exp:""},
-    {type:"tf", q:"Payback Period is the percentage of profit a system generates compared to its cost.", a:false, exp:"This is the definition of Return on Investment - ROI."},
-    {type:"tf", q:"Return on Investment (ROI) is the percentage of profit a system generates compared to its cost.", a:true, exp:""},
-    {type:"tf", q:"The shorter the Payback Period, the lower the investment project risk.", a:true, exp:""},
-    {type:"tf", q:"To calculate the Payback Period, we multiply the initial cost by the annual net cash flow.", a:false, exp:"We divide the initial cost by the annual net flow."},
-    {type:"tf", q:"An ROI of 480% means the system achieved profits far exceeding its original cost.", a:true, exp:""},
-    {type:"tf", q:"In ROI analysis, a result of 1 (or 100%) means the organization only recovered its cost without additional profit.", a:true, exp:""},
-    {type:"tf", q:"When ROI is less than 100%, it means the project has not yet recovered its original costs.", a:true, exp:""},
-    {type:"tf", q:"Direct Conversion strategy is the least risky when implementing a new system.", a:false, exp:"It is the most risky as it involves stopping the old system and starting the new one immediately."},
-    {type:"tf", q:"Direct Conversion should be used for highly sensitive systems like aviation or banking.", a:false, exp:"Sensitive systems require Parallel Conversion to ensure a backup is available."},
-    {type:"tf", q:"Pilot Conversion involves implementing the system in one branch of the company before rolling it out to others.", a:true, exp:""},
-    {type:"tf", q:"Phased Conversion strategy requires a very long time for full system implementation.", a:true, exp:""},
-    {type:"tf", q:"Parallel Conversion strategy is very expensive because it requires running two systems simultaneously.", a:true, exp:""},
-    {type:"tf", q:"Parallel Conversion provides the best data protection but consumes double human resources.", a:true, exp:""},
-    {type:"tf", q:"Strategic Alignment means that IT goals should operate in isolation from core business goals.", a:false, exp:"Alignment requires IT and business goals to work together."},
-    {type:"tf", q:"In Strategic Alignment, IT Strategy must follow Business Strategy trends.", a:true, exp:""},
-    {type:"tf", q:"CRM systems primarily aim to improve internal factory processes and increase machine efficiency.", a:false, exp:"CRM is for managing customer relationships and increasing sales."},
-    {type:"tf", q:"When calculating the Payback Period, annual maintenance costs must be deducted from total savings to reach the net flow.", a:true, exp:""},
-    {type:"tf", q:"Saving on 'wasted losses' is considered a form of cash inflow when evaluating information systems.", a:true, exp:""},
-    {type:"tf", q:"ERP is a comprehensive system that links all organization departments (Accounting, HR, Production) in a single database.", a:true, exp:""},
-    {type:"tf", q:"'Time to Market' is one of the most important factors that favor COTS over In-house development.", a:true, exp:""},
-    {type:"tf", q:"Management Information Systems (MIS) are used only to support executive decision-making.", a:false, exp:"MIS also supports operational and administrative processes."},
-    {type:"tf", q:"The Internet of Things (IoT) refers to the use of smart devices connected to each other via the internet.", a:true, exp:""},
-    {type:"tf", q:"Automation reduces the need for human interaction in daily operations.", a:true, exp:""},
-    {type:"tf", q:"Cybersecurity aims only to protect data within the organization's internal networks.", a:false, exp:"It protects data both within internal networks and across the internet."},
-    {type:"tf", q:"Total replacement of old systems with new ones (Direct Cutover) is the safest way to implement information systems.", a:false, exp:"It carries high risks if the new system is not fully ready."},
-    {type:"tf", q:"Knowledge Management Systems (KMS) help in storing and retrieving institutional knowledge when needed.", a:true, exp:""},
-    {type:"tf", q:"Artificial Intelligence (AI) is an integral part of modern trends in information systems.", a:true, exp:""},
-    {type:"tf", q:"Transaction Processing Systems (TPS) focus on supporting daily operations like purchases and invoicing.", a:true, exp:""},
-    {type:"tf", q:"The use of Strategic Information Systems is limited only to large corporations.", a:false, exp:"Small and medium enterprises can also benefit from them to achieve their goals."},
-    {type:"tf", q:"Cloud Computing technology contributes to reducing technical infrastructure costs.", a:true, exp:""},
-    {type:"tf", q:"Decision Support Systems (DSS) are used to provide recommendations and reports that support decision-making.", a:true, exp:""},
-    {type:"tf", q:"Integrating old and new systems is always executed without any technical problems.", a:false, exp:"Integration may face technical challenges and compatibility difficulties."},
-    {type:"tf", q:"IoT can improve the management of agricultural resources.", a:true, exp:""},
-    {type:"tf", q:"Measuring Return on Investment (ROI) in information systems is considered an unnecessary tool.", a:false, exp:"ROI is essential for evaluating system effectiveness."},
-    {type:"tf", q:"ROI measurement helps organizations make effective decisions regarding IS implementation.", a:true, exp:""},
-    {type:"tf", q:"Geographic Information Systems (GIS) are used only in urban planning.", a:false, exp:"GIS is also used in agriculture, natural resource management, and many other fields."},
-    {type:"tf", q:"Automating administrative processes contributes to improving productivity and reducing human error.", a:true, exp:""},
-    {type:"tf", q:"IS Strategy focuses only on the technical aspect without considering institutional goals.", a:false, exp:"Strategy must align with institutional goals to achieve synergy."},
-    {type:"tf", q:"Health Information Systems (HIS) contribute to improving the delivery and quality of healthcare services.", a:true, exp:""},
-    {type:"tf", q:"Decision Support Systems (DSS) rely only on historical data for decision-making.", a:false, exp:"DSS also relies on current and predictive data."},
-    {type:"tf", q:"Management Information Systems (MIS) focus on providing data quickly and accurately to support administrative decisions.", a:true, exp:""},
-    {type:"tf", q:"Enterprise Resource Planning (ERP) is suitable for all types of organizations regardless of their size.", a:true, exp:""},
-    {type:"tf", q:"Cybersecurity relies on technology only, without the need for human factors.", a:false, exp:"It requires both technology and human procedures."},
-    {type:"tf", q:"Automation increases process execution time due to reliance on software.", a:false, exp:"It reduces the time required for execution."},
-    {type:"tf", q:"Automation increases the cost of operations without providing practical benefits.", a:false, exp:"It contributes to reducing long-term costs and increasing efficiency."},
-    {type:"tf", q:"Knowledge Management Systems (KMS) contribute to improving collaboration between teams within the organization.", a:true, exp:""},
-    {type:"tf", q:"IoT relies on connectivity between devices only, without data analysis.", a:false, exp:"It also relies on data analysis to improve efficiency."},
-    {type:"tf", q:"Phased system conversion contributes to reducing errors during implementation.", a:true, exp:""},
-    {type:"tf", q:"IoT is considered part of future trends in information systems.", a:true, exp:""},
-    {type:"tf", q:"GIS is used to determine the best location for commercial businesses.", a:true, exp:""},
-    {type:"tf", q:"CRM is used for inventory management.", a:false, exp:"CRM is for customer relationship management."},
-    {type:"tf", q:"DSS contributes to long-term decisions.", a:true, exp:""},
-    {type:"tf", q:"TPS is limited only to industrial services.", a:false, exp:"TPS is used in all transaction-based services."},
-    {type:"tf", q:"Using IoT can help improve inventory management in stores.", a:true, exp:""},
-    {type:"tf", q:"GIS cannot be used in the agricultural sector.", a:false, exp:"GIS is used to improve crop productivity and soil analysis."},
-    {type:"tf", q:"In a Parallel Conversion strategy, the old system is stopped immediately when the new system starts.", a:false, exp:"Both systems run together for a period."},
-    {type:"tf", q:"'Shadowing' or 'Running in the background' is considered low-risk because the new system works without affecting users.", a:true, exp:""},
-    {type:"tf", q:"Senior management (Executives) use Transaction Processing Systems (TPS) for long-term planning.", a:false, exp:"Executives use Executive Information Systems - EIS or ESS; TPS is for operational levels."},
-    {type:"tf", q:"Strategic Alignment occurs when IS capabilities directly support the ambitions and goals of the business strategy.", a:true, exp:""},
-    {type:"tf", q:"Data is defined as raw facts that have no meaning on their own.", a:true, exp:"Information is the processed data that has meaning."},
-    {type:"tf", q:"Pilot Conversion strategy involves implementing the system in one branch or department before generalizing it to the entire company.", a:true, exp:""},
-    {type:"tf", q:"Decision Support Systems (DSS) are primarily used to solve routine problems.", a:false, exp:"DSS is for semi-structured and non-routine problems; TPS is for routine ones."},
-    {type:"tf", q:"IS Strategy is an integral part of the overall organizational strategy and cannot be formulated in isolation.", a:true, exp:""},
-    {type:"tf", q:"If an organization's strategy is 'Customer Service Excellence,' the aligned IS strategy must focus on CRM systems.", a:true, exp:""},
-    {type:"tf", q:"The role of Information Systems in the management pyramid is limited to providing routine reports to middle management only.", a:false, exp:"It serves all levels, from operational to strategic."},
-    {type:"tf", q:"Strategic Alignment is a 'static' process that occurs only once when the system is established.", a:false, exp:"It is a continuous and dynamic process to keep up with changes."},
-    {type:"tf", q:"Strategic Alignment means that technology follows organizational goals, and not just the other way around, as there is a mutual influence relationship.", a:true, exp:""},
-    {type:"tf", q:"Failure to achieve Strategic Alignment often leads to massive technical investments without achieving a real Return on Investment (ROI).", a:true, exp:""},
-    {type:"tf", q:"Strategic Alignment is the exclusive responsibility of the IT Manager, and senior management has no role in it.", a:false, exp:"It is a shared responsibility between senior management and IT management."},
-    {type:"tf", q:"Strategic Information Systems help the organization gain a sustainable competitive advantage by changing the way it competes in the market.", a:true, exp:""},
-    {type:"tf", q:"IT Strategy is the same as IS Strategy, and there is no difference between them in the strategic perspective.", a:false, exp:"IS focuses on 'What' - applications and data; IT focuses on 'How' - hardware and technology."},
-    {type:"tf", q:"The Course Specification aims only to introduce the student to technical programming skills, without addressing the managerial dimension of IS.", a:false, exp:"It aims to link technology with strategic management."},
+        <select id="statusFilter" onchange="applyFilters()">
+          <option value="all">All Status</option>
+          <option value="unanswered">Unanswered</option>
+          <option value="answered">Answered</option>
+          <option value="wrong">Wrong Only</option>
+        </select>
+      </div>
 
-    // MCQ QUESTIONS
-    {type:"mcq", q:"Which of the following alternatives is most suitable when an organization needs a system that provides a 'unique competitive advantage' and total confidentiality?", options:["Near-shore Outsourcing","Commercial Off-The-Shelf (COTS)","Off-shore Outsourcing","In-house Development"], a:3},
-    {type:"mcq", q:"'Vendor Lock-in' is defined as:", options:["The organization's ability to switch vendors easily.","The difficulty of moving to another vendor due to high costs or technical constraints.","An agreement that guarantees the quality of service provided.","Transforming costs from operational to capital."], a:1},
-    {type:"mcq", q:"What is the correct formula for calculating the Payback Period?", options:["Initial Cost ÷ Annual Net Cash Flow","Initial Cost × Annual Net Cash Flow","Net Profit ÷ Initial Cost","Initial Cost - Annual Savings"], a:0},
-    {type:"mcq", q:"Which cloud computing model provides 'ready-to-use applications' for users, such as Gmail?", options:["IaaS (Infrastructure as a Service)","PaaS (Platform as a Service)","SaaS (Software as a Service)","Private Cloud"], a:2},
-    {type:"mcq", q:"The conversion strategy in which the old and new systems run together for a period of time is:", options:["Parallel Conversion","Direct Conversion","Pilot Conversion","Phased Conversion"], a:0},
-    {type:"mcq", q:"Strategic Alignment is considered successful when:", options:["Technology goals follow the organization's goals.","The organization buys the latest hardware on the market.","The IT department operates completely independently.","The Information Systems budget is minimized."], a:0},
-    {type:"mcq", q:"In ROI analysis, if the result is 400%, this means:", options:["The return is four times the cost.","The company lost 400 EGP.","The payback period is 4 years.","The system failed to achieve its objectives."], a:0},
-    {type:"mcq", q:"The main disadvantage of the Direct Conversion strategy is:", options:["High risk in case of failure.","Very high cost.","Extremely slow implementation.","The need for additional staff."], a:0},
-    {type:"mcq", q:"A Service Level Agreement (SLA) is a contract that guarantees:", options:["The vendor's commitment to specific quality and performance standards.","The company's ownership of the source code.","Hiring new programmers within the company.","Purchasing new server hardware."], a:0},
-    {type:"mcq", q:"In which of the following cases is it preferable to buy COTS software?", options:["When needs are standardized and common.","When the company needs absolute confidentiality.","When there is no similar system available in the market.","When the company desires a unique competitive advantage."], a:0},
-    {type:"mcq", q:"The concept of 'Cloud Computing' primarily relies on:", options:["Renting technical resources over the internet.","Buying hardware and storing it locally.","Completely dispensing with the internet.","Developing software manually only."], a:0},
-    {type:"mcq", q:"What is meant by 'Near-shore Outsourcing'?", options:["Contracting with a company in a neighboring country that shares the same language or culture.","Contracting with a company in a completely different continent.","Relying on the programming team within the company's headquarters.","Buying computers from a local market."], a:0},
-    {type:"mcq", q:"Annual Maintenance Costs are considered part of:", options:["Cash Outflows","Cash Inflows","One-time Capital Expenditures","Costs that do not affect the Payback Period."], a:0},
-    {type:"mcq", q:"Which cloud alternative gives the organization the 'maximum degree of security and privacy'?", options:["Private Cloud","Public Cloud","Hybrid Cloud","SaaS"], a:0},
-    {type:"mcq", q:"The Phased Conversion strategy relies on:", options:["Implementing specific parts of the system sequentially.","Implementing the entire system in one day.","Using the new system for only one branch as a sample.","Completely canceling the old system before starting the new one."], a:0},
-    {type:"mcq", q:"What is the main benefit of calculating the 'Annual Net Cash Flow'?", options:["Determining the real profit generated by the system after deducting operational costs.","Knowing the total sales of the company.","Knowing the currency exchange rate.","Determining the IT Manager's salary."], a:0},
-    {type:"mcq", q:"In the Decision Matrix, the quadrant that combines (Low Importance + Low Differentiation) directs us toward:", options:["Off-the-shelf software (COTS)","In-house Development","Strategic Outsourcing","Building a long-term partnership"], a:0},
-    {type:"mcq", q:"Which of the following is considered a Capital Expenditure (CapEx) when purchasing an information system?", options:["Purchasing servers and permanent software licenses.","Monthly internet bill.","Annual technical support cost.","Salaries of the employees who use the system."], a:0},
-    {type:"mcq", q:"'Change Management' is essential when implementing an ERP system because:", options:["Employees may resist the new system due to changes in their work routine.","The system needs difficult programming.","Electricity may be cut off during conversion.","The cost of the system is very high."], a:0},
-    {type:"mcq", q:"If the system's lifespan is 5 years and its payback period is 6 years, the project is considered:", options:["Economically unfeasible.","Successful and economically feasible.","Better than other investment alternatives.","Highly profitable."], a:0},
-    {type:"mcq", q:"The PaaS model (Platform as a Service) is primarily oriented toward serving:", options:["Programmers and developers to build their applications.","Regular users (e.g., Gmail).","Account managers only.","Reception staff."], a:0},
-    {type:"mcq", q:"One of the risks of 'Off-shore Outsourcing' that does not appear in local outsourcing is:", options:["Significant time zone differences and language barriers.","High software price.","Unavailability of computers.","Quality of the source code."], a:0},
-    {type:"mcq", q:"'Strategic Alignment' is used to ensure that IT investments achieve:", options:["Maximum added value to business goals.","The largest number of devices in the company.","High salaries for employees.","Reduction in working hours."], a:0},
-    {type:"mcq", q:"The advantage of 'Direct Conversion' is that it is:", options:["The least expensive and fastest to implement.","The most secure.","Allows testing for one branch.","Guarantees no data loss."], a:0},
-    {type:"mcq", q:"When comparing two alternatives, we choose the one with the higher ROI because:", options:["It provides a greater financial return for every pound invested.","It takes a longer time.","It is harder to implement.","It needs less maintenance only."], a:0},
-    {type:"mcq", q:"ERP is an integrated system that links different departments, while SCM focuses on:", options:["Supply chain, vendors, and warehouses.","Customer relationships only.","Employee salaries only.","Social media programs."], a:0},
-    {type:"mcq", q:"What is the role of the 'Financial Analyst' in IS projects?", options:["Evaluating economic feasibility and calculating project cash flows.","Writing program codes.","Repairing computers.","Designing user interfaces."], a:0},
-    {type:"mcq", q:"Which of the following is an example of an 'Intangible Benefit' of a system?", options:["Increasing customer satisfaction and improving company reputation.","Saving 50,000 EGP on paper.","Reducing the number of employees by 10%.","Reducing maintenance costs by 5%."], a:0},
-    {type:"mcq", q:"'Hybrid Cloud' is an ideal solution for companies that:", options:["Want to keep sensitive data locally while using the public cloud for routine tasks.","Want to get rid of all their hardware.","Do not have fast internet.","Work in the field of agriculture only."], a:0},
-    {type:"mcq", q:"'Total Cost of Ownership' (TCO) means:", options:["The sum of all costs (purchase, maintenance, training, support) throughout the system's life.","The purchase price of the software only.","The cost of electricity at the company's headquarters.","The selling price of the system to another competitor."], a:0},
-    {type:"mcq", q:"In the Decision Matrix, what does 'High Differentiation' mean?", options:["The system offers unique functions that make the company outperform its competitors.","The system is available in all competing companies.","The price of the system is very high.","The system needs a large number of servers."], a:0},
-    {type:"mcq", q:"Public Cloud is less expensive because the external provider:", options:["Divides infrastructure costs among a large number of subscribers.","Uses free software.","Does not provide technical support.","Does not update the systems."], a:0},
-    {type:"mcq", q:"Direct Conversion is sometimes called the 'Direct Cutover' strategy because:", options:["It cuts the relationship with the old system as soon as the new system is operational.","The internet is cut off from the company.","It leads to cutting employee salaries.","The wires of the old devices are cut."], a:0},
-    {type:"mcq", q:"Why do managers prefer a short 'Payback Period'?", options:["Because it increases company liquidity and reduces uncertainty risks.","To increase the number of project years.","Because it makes the system slower.","To avoid paying taxes."], a:0},
-    {type:"mcq", q:"Which of the following roles is responsible for 'Alignment' between IT and business?", options:["Chief Information Officer (CIO) and Senior Management.","Code Programmer.","Network Technician.","Data Entry Clerk."], a:0},
-    {type:"mcq", q:"'Scalability' is a major advantage in:", options:["Cloud Computing","Fixed In-house Development.","Locally installed COTS software.","Paper archiving."], a:0},
-    {type:"mcq", q:"In the ROI equation, what does 'Net Profit' represent?", options:["Total benefits minus all costs.","Total sales of the company.","The budget allocated for the project.","Added value for customers only."], a:0},
-    {type:"mcq", q:"Which conversion strategy is most suitable for a company with an 'Organizational Culture' that strongly resists change?", options:["Phased Conversion, because it gives employees time to learn and adapt.","Shocking Direct Conversion.","Completely stopping work.","Off-shore Outsourcing."], a:0},
-    {type:"mcq", q:"'Operational Expenditure' (OpEx) in an IT budget refers to:", options:["Daily and monthly expenses required to keep the system running.","Building a new information facility.","The price of purchasing a server for the first time.","The cost of establishing the company."], a:0},
-    {type:"mcq", q:"When a manager chooses 'Outsourcing,' they are usually seeking to:", options:["Focus on the company's core competencies.","Increase the number of employees.","Own the system's source code.","Increase administrative burdens."], a:0},
-    {type:"mcq", q:"According to the 'Information Systems Pyramid,' which system serves 'Senior Management' and helps in making unstructured decisions?", options:["Transaction Processing Systems (TPS).","Decision Support Systems (DSS).","Strategic Information Systems (SIS) or Executive Information Systems (EIS).","Office Automation Systems (OAS)."], a:2},
-    {type:"mcq", q:"In the context of IS, 'Strategic Alignment' means:", options:["Purchasing the latest hardware and technical equipment available in the market.","Ensuring harmony and consistency between technical goals and organizational goals.","Replacing humans completely with Artificial Intelligence.","Minimizing the IT department budget."], a:1},
-    {type:"mcq", q:"The relationship between 'Business Strategy' and 'IS Strategy' is:", options:["Conflicting (each strategy works in a different direction).","Subordinate (IS only follows business without influence).","Interactively reciprocal (each influences and is influenced by the other).","Formal (no real relationship exists between them)."], a:2},
-    {type:"mcq", q:"Which of the following levels in the IS pyramid is considered the 'Primary Source' of data that feeds other systems?", options:["Operational Level","Management Level","Knowledge Level","Strategic Level"], a:0},
-    {type:"mcq", q:"'Information Systems Strategy' (IS Strategy) primarily aims to:", options:["Determine the specifications of internal cables and networks.","Determine the application portfolio that supports the long-term business plan.","Repair daily computer malfunctions.","Increase the number of programmers in the company."], a:1},
-    {type:"mcq", q:"When a company decides on 'Cost Reduction' as a business strategy, the role of the aligned IS strategy is:", options:["Buying expensive computers for all employees.","Automating manual processes to reduce waste and improve operational efficiency.","Hiring a large number of programmers without an actual need.","Ignoring technology and focusing on manual labor only."], a:1},
-    {type:"mcq", q:"Which of the following models expresses strategic alignment that starts from 'Business Strategy' down to 'Information Infrastructure'?", options:["Top-Down Alignment","Bottom-Up Alignment","Random Alignment","Vendor-only Alignment"], a:0},
-    {type:"mcq", q:"Strategic Alignment is 'successful' if information systems lead to:", options:["Increasing the complexity of administrative procedures.","Achieving organization goals and strategic objectives effectively.","Consuming the organization's entire budget on software.","Separating technical management from senior management."], a:1},
-    {type:"mcq", q:"'Information Systems Strategy' (IS Strategy) primarily focuses on:", options:["'What' applications and data are needed to support the business?","'How' to repair a broken computer screen?","'When' to pay the electricity bill?","'Who' is the ideal employee in the reception department?"], a:0},
-    {type:"mcq", q:"In the interactive relationship between the two strategies, Information Systems can:", options:["Only impose constraints on managers' dreams.","Open horizons and new business strategies that were not possible before (e.g., e-commerce).","Be just a tool for writing and printing.","Completely eliminate the need for a business strategy."], a:1},
-    {type:"mcq", q:"What is the primary objective of using Information Systems?", options:["Improving administrative processes.","Reducing costs.","Supporting decision-making.","All of the above."], a:3},
-    {type:"mcq", q:"Which of the following represents an application of the Internet of Things (IoT)?", options:["Home appliances connected to the internet.","Data analysis using Artificial Intelligence.","Creating databases.","Using Decision Support Systems."], a:0},
-    {type:"mcq", q:"What is the main goal of Cybersecurity?", options:["Improving productivity.","Protecting data and systems.","Reducing costs.","Increasing internet speed."], a:1},
-    {type:"mcq", q:"Which of the following is used to analyze spatial and geographic data?", options:["MIS","GIS","ERP","CRM"], a:1},
-    {type:"mcq", q:"Which system is used to manage daily operations such as invoicing?", options:["DSS","TPS","ERP","IoT"], a:1},
-    {type:"mcq", q:"What is the fundamental element of a SWOT analysis?", options:["Organizational vision.","Identifying Strengths, Weaknesses, Opportunities, and Threats.","Using Artificial Intelligence.","Building a database."], a:1},
-    {type:"mcq", q:"Knowledge Management Systems (KMS) focus on:", options:["Providing financial reports.","Storing and sharing knowledge.","Process automation.","Improving customer relationships."], a:1},
-    {type:"mcq", q:"Which system supports strategic decision-making?", options:["TPS","DSS","IoT","CRM"], a:1},
-    {type:"mcq", q:"Which of the following is considered part of the future trends in Information Systems?", options:["Artificial Intelligence (AI).","Traditional printing.","Reducing internet usage.","Manual data entry."], a:0},
-    {type:"mcq", q:"What is Return on Investment (ROI) in Information Systems?", options:["Measuring the financial performance of systems.","Defining the database.","Supporting operational processes.","Creating websites."], a:0},
-    {type:"mcq", q:"Which system integrates business processes into a single platform?", options:["ERP","DSS","GIS","CRM"], a:0},
-    {type:"mcq", q:"Automation focuses on:", options:["Completely replacing workers.","Executing tasks automatically.","Improving relationships between departments.","Reducing data."], a:1},
-    {type:"mcq", q:"Which information system is used for market analysis?", options:["CRM","GIS","TPS","ERP"], a:0},
-    {type:"mcq", q:"Which system is used to analyze daily operations?", options:["DSS","TPS","ERP","IoT"], a:1},
-    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)?", options:["Storing data only.","Supporting decision-making.","Process automation.","Resource management."], a:1},
-    {type:"mcq", q:"Which system helps improve product quality in factories?", options:["IoT","DSS","KMS","GIS"], a:0},
-    {type:"mcq", q:"Which cybersecurity technology protects data from unauthorized access?", options:["Encryption.","Cloud storage.","GIS systems.","Process improvement."], a:0},
-    {type:"mcq", q:"ERP systems are used to manage:", options:["Operational processes only.","Different departments in an integrated manner.","Data security only.","Geographic analytics."], a:1},
-    {type:"mcq", q:"Which technology is used to improve energy efficiency in smart buildings?", options:["IoT","GIS","ERP","DSS"], a:0},
-    {type:"mcq", q:"What is a Customer Relationship Management (CRM) system?", options:["A system for analyzing geographic data.","A system for improving relationships with customers.","A system for cloud storage.","A system for supporting strategic decisions."], a:1},
-    {type:"mcq", q:"Which of the following is used to improve interaction between connected devices?", options:["IoT","KMS","DSS","ERP"], a:0},
-    {type:"mcq", q:"What is the goal of using Artificial Intelligence (AI) in Information Systems?", options:["Improving human decision-making.","Reducing the amount of data used.","Providing financial reports only.","Building processing systems."], a:0},
-    {type:"mcq", q:"Which of the following is used to analyze data and derive decisions?", options:["DSS","TPS","IoT","ERP"], a:0},
-    {type:"mcq", q:"Which system manages the employee database and payroll?", options:["ERP","TPS","DSS","MIS"], a:0},
-    {type:"mcq", q:"Automation contributes to:", options:["Improving execution speed and reducing errors.","Increasing reliance on human workers.","Reducing costs only.","Improving relationships between employees."], a:0},
-    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)? (Strategic)", options:["Human Resource Management.","Supporting strategic decision-making.","Analyzing geographic data.","Improving customer relationships."], a:1},
-    {type:"mcq", q:"Which of the following is used to analyze spatial and geographic data?", options:["MIS","GIS","CRM","IoT"], a:1},
-    {type:"mcq", q:"Which system assists in managing daily operations?", options:["DSS","ERP","TPS","KMS"], a:2},
-    {type:"mcq", q:"Which of the following is considered part of the Internet of Things (IoT)?", options:["Connected home appliances.","Creating databases.","Decision Support Systems.","Geographic data analysis."], a:0},
-    {type:"mcq", q:"Which system is used to improve relationships with customers?", options:["CRM","GIS","ERP","TPS"], a:0},
-    {type:"mcq", q:"Which system integrates business processes into a single platform?", options:["ERP","DSS","IoT","MIS"], a:0},
-    {type:"mcq", q:"Which of the following is a technology that contributes to cybersecurity?", options:["Encryption.","Improving operational processes.","Creating administrative reports.","Geographic data analysis."], a:0},
-    {type:"mcq", q:"What is the objective of Automation?", options:["Increasing reliance on human workers.","Executing tasks automatically.","Improving relationships between departments.","Reducing costs only."], a:1},
-    {type:"mcq", q:"Which system is used to analyze data and extract decisions?", options:["DSS","IoT","ERP","GIS"], a:0},
-    {type:"mcq", q:"What is Return on Investment (ROI) in Information Systems?", options:["Measuring system performance.","Data analysis.","Creating websites.","Customer management."], a:0},
-    {type:"mcq", q:"Knowledge Management Systems (KMS) contribute to:", options:["Improving organizational learning.","Geographic data analysis.","Managing operational processes.","Automating manual tasks."], a:0},
-    {type:"mcq", q:"What is the primary function of Management Information Systems (MIS)?", options:["Improving customer relationships.","Supporting administrative decision-making.","Managing operational processes.","Geographic data analysis."], a:1},
-    {type:"mcq", q:"Which of the following is considered part of the future trends in Information Systems?", options:["Artificial Intelligence (AI).","Reducing internet usage.","Traditional printing.","Manual data entry."], a:0},
-    {type:"mcq", q:"Which system is used for inventory management?", options:["ERP","CRM","GIS","DSS"], a:0},
-    {type:"mcq", q:"What is the primary objective of Decision Support Systems (DSS)?", options:["Providing supplementary reports only.","Supporting decision-making.","Storing data.","Improving relationships between departments."], a:1},
-    {type:"mcq", q:"Which of the following is used to improve energy efficiency in smart buildings?", options:["IoT","GIS","ERP","DSS"], a:0},
-    {type:"mcq", q:"Which system helps organizations improve internal team collaboration?", options:["CRM","KMS","GIS","ERP"], a:1},
-    {type:"mcq", q:"Which system is used to provide accurate and analytical reports to support management?", options:["DSS","MIS","TPS","ERP"], a:1},
-    {type:"mcq", q:"What is the primary objective of Encryption technology?", options:["Improving productivity.","Protecting data.","Reducing the time needed for process execution.","Geographic data analysis."], a:1},
-    {type:"mcq", q:"Which system is used in daily operations such as invoicing and payroll?", options:["ERP","TPS","MIS","GIS"], a:1},
-    {type:"mcq", q:"Which system integrates all organizational data into one system?", options:["ERP","GIS","TPS","CRM"], a:0},
-    {type:"mcq", q:"Which of the following is considered part of Enterprise Resource Planning (ERP) systems?", options:["Inventory management.","Automating operational processes.","Improving customer relationships.","Geographic data analysis."], a:0},
-    {type:"mcq", q:"What is Internet of Things (IoT) technology?", options:["Geographic data analysis.","Connecting devices via the internet.","Manual data storage.","Providing decision support reports."], a:1},
-    {type:"mcq", q:"Which system is used to analyze geographic data?", options:["GIS","ERP","DSS","KMS"], a:0},
-    {type:"mcq", q:"Which of the following is considered part of Cybersecurity?", options:["Inventory management.","Encryption.","Providing administrative reports.","Improving customer relationships."], a:1},
-    {type:"mcq", q:"What is the goal of Knowledge Management Systems (KMS)?", options:["Improving employee productivity.","Supporting decision-making.","Sharing knowledge within the organization.","Geographic data analysis."], a:2},
-    {type:"mcq", q:"What is the primary function of Decision Support Systems (DSS)?", options:["Improving relationships between departments.","Providing recommendations for effective decision-making.","Storing data.","Creating customer databases."], a:1},
-    {type:"mcq", q:"Which system is used to improve relationships with customers?", options:["ERP","CRM","GIS","IoT"], a:1},
-    {type:"mcq", q:"Which of the following is considered part of Transaction Processing Systems (TPS)?", options:["Payroll management.","Data analysis.","Improving customer relationships.","Providing decision support reports."], a:0},
-    {type:"mcq", q:"Which system is used to analyze geographic data?", options:["GIS","TPS","DSS","ERP"], a:0},
-    {type:"mcq", q:"What is the primary function of Automation systems?", options:["Improving relationships between departments.","Executing tasks automatically.","Reducing data usage.","Improving network performance."], a:1},
-    {type:"mcq", q:"What is the primary goal of Internet of Things (IoT) technology?", options:["Improving relationships between departments.","Improving device communication and data exchange.","Providing accurate financial reports.","Managing daily operations."], a:1},
-    {type:"mcq", q:"Which system supports long-term decisions?", options:["TPS","ERP","DSS","GIS"], a:2},
-    {type:"mcq", q:"Which system contributes to improving organizational productivity?", options:["KMS","GIS","TPS","DSS"], a:0},
-    {type:"mcq", q:"'Alpha Trading' faces challenges in managing customer data due to reliance on manual methods. The company noticed a decline in customer satisfaction caused by delays in responding to inquiries and issues in order management. Which system do you advise the company to implement?", options:["ERP","CRM (Customer Relationship Management)","GIS","TPS"], a:1},
-    {type:"mcq", q:"A modern hospital faces challenges in managing patient records and accurately tracking their conditions. Which system is most suitable to meet the hospital's needs?", options:["TPS","ERP","KMS","HIS (Health Information Systems)"], a:3},
-    {type:"mcq", q:"An educational institution wants to provide remote learning services to students using modern technology. Which system can the institution implement to achieve these goals?", options:["TPS","LMS (Learning Management Systems)","DSS","CRM"], a:1},
-    {type:"mcq", q:"A modern farm wants to use technology to analyze soil and weather data to improve crop yields and reduce costs. Which system is recommended to achieve this goal?", options:["CRM","GIS (Geographic Information Systems)","DSS","TPS"], a:1}
-];
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
 
-let currentIndex = 0;
-let userAnswers = {};
-let filteredQuestions = [...questions];
+      <div id="questionCard"></div>
 
-function renderQuestion() {
-    const q = filteredQuestions[currentIndex];
-    if (!q) return;
-    const container = document.getElementById('questionContainer');
-    const globalIdx = questions.indexOf(q);
-    const userAnswer = userAnswers[globalIdx];
-    
-    let optionsHTML = '';
-    if (q.type === 'tf') {
-        optionsHTML = `<div class="tf-options">
-            <button class="option" data-val="true" onclick="selectAnswer(${globalIdx}, true)">✓ True</button>
-            <button class="option" data-val="false" onclick="selectAnswer(${globalIdx}, false)">✗ False</button>
-        </div>`;
-    } else {
-        optionsHTML = '<div class="options">' + q.options.map((opt, i) => 
-            `<button class="option" data-val="${i}" onclick="selectAnswer(${globalIdx}, ${i})">${String.fromCharCode(97+i)}) ${opt}</button>`
-        ).join('') + '</div>';
+      <div class="nav">
+        <button class="btn-secondary" onclick="previousQuestion()">Previous</button>
+        <button class="btn-secondary" onclick="restartQuiz()">Restart</button>
+        <button class="btn-primary" onclick="nextQuestion()">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Computer Applications in Project Management - Interactive Quiz
+  </footer>
+
+  <script>
+    const tableContext = `Based on this table:
+┌──────────┬───────────────┬──────────────┐
+│ The task │ The previous  │ The duration │
+│          │     task      │              │
+├──────────┼───────────────┼──────────────┤
+│    A     │       -       │      5       │
+│    B     │       A       │      15      │
+│    C     │       A       │      10      │
+│    D     │       A       │      5       │
+│    E     │     B & C     │      15      │
+│    F     │   C & B & D   │      10      │
+│    G     │       F       │      170     │
+│    H     │     E & G     │      35      │
+└──────────┴───────────────┴──────────────┘`;
+
+    const questions = [
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 1",
+        question: "A project is a set of activities and events arranged in a logical sequence.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 2",
+        question: "The Critical Path Method (CPM) is defined as a group of consecutive activities that form the longest path in the network.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 3",
+        question: "In a node network diagram, activities are represented by nodes (circles), while arrows represent the start or finish of each activity.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 4",
+        question: "A critical activity is an activity whose delay does not affect the project completion date.",
+        correct: "False",
+        reason: "A critical activity is one whose delay during execution will cause a corresponding delay to the entire project."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 5",
+        question: "An Event is a specific point in time that requires no duration or resources.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 6",
+        question: "A Dummy Activity consumes time and resources and is used only to show logical sequence.",
+        correct: "False",
+        reason: "A Dummy Activity is an activity that does not require time or resources to complete and is used only to indicate the logical sequence of activities."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 7",
+        question: "The critical path starts at the beginning of the project and ends at its conclusion.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 8",
+        question: "A Finish-to-Start (FS) relationship means the predecessor task must be finished before starting the current task.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 9",
+        question: "An activity is reaching a specific point in time and does not require a beginning and end time.",
+        correct: "False",
+        reason: "This is the definition of an \"Event\". An \"Activity\" is an effort that requires a beginning, an end, and resources for its execution."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 10",
+        question: "To monitor project progress, only project inputs and outputs should be monitored.",
+        correct: "False",
+        reason: "Project control encompasses monitoring project inputs, processes, and outputs, not just inputs and outputs."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 11",
+        question: "An event is an effort that requires a beginning and end point and resources for its execution.",
+        correct: "False",
+        reason: "This is the definition of an \"Activity\". An \"Event\" is reaching a specific point in time that does not require duration or resources."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 12",
+        question: "Three times estimates must be known in the Critical Path Method to calculate the expected time for each activity.",
+        correct: "False",
+        reason: "Three time estimates are used in the PERT Method, not the Critical Path Method (CPM)."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 13",
+        question: "Time elasticity is calculated by calculating the difference between the early and late finishes.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 14",
+        question: "The Finish-to-Finish (FF) relationship states that a dependent task cannot be completed until the preceding task has begun.",
+        correct: "False",
+        reason: "The Finish-to-Finish (FF) relationship means a task cannot be completed until the preceding task has been completed."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 15",
+        question: "Reporting is used to determine the current project status and illustrate project progress.",
+        correct: "True"
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 16",
+        question: "The following relationship (Critical Path Time - Target Time) / (Standard Deviation) is used to calculate the variance value.",
+        correct: "False",
+        reason: "This relationship is used to calculate the \"Project completion probability\", not the variance. Also, the correct formula is (Target Time - Critical Path Time) / Standard Deviation."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 17",
+        question: "The pessimistic time is the minimum time required to complete a task.",
+        correct: "False",
+        reason: "The pessimistic time is the maximum time required to complete a task. The optimistic time is the minimum time."
+      },
+      {
+        type: "tf",
+        section: "True or False",
+        number: "Question 18",
+        question: "The time elasticity of critical activities is zero.",
+        correct: "True"
+      },
+
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 1",
+        question: "Late Finish (LF) time is:",
+        options: [
+          { label: "a", text: "The earliest time an activity can be completed." },
+          { label: "b", text: "The latest time an activity can be completed without delaying subsequent activities." },
+          { label: "c", text: "The sum of ES and EF times." },
+          { label: "d", text: "The time required to start the project." }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 2",
+        question: "The final step in applying the Critical Path Method is:",
+        options: [
+          { label: "a", text: "Drawing tasks." },
+          { label: "b", text: "Estimating time." },
+          { label: "c", text: "Updating the network diagram periodically during execution." },
+          { label: "d", text: "Identifying relationships." }
+        ],
+        correct: "c"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 3",
+        question: "In a (Finish-to-Finish - FF) relationship:",
+        options: [
+          { label: "a", text: "The task cannot be completed until the predecessor is finished." },
+          { label: "b", text: "The task starts with the predecessor's start." },
+          { label: "c", text: "The task finishes before the predecessor starts." },
+          { label: "d", text: "No relationship exists between tasks." }
+        ],
+        correct: "a"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 4",
+        question: "Time Slack for each task is calculated by:",
+        options: [
+          { label: "a", text: "Late Finish - Early Finish." },
+          { label: "b", text: "Late Start - Early Start." },
+          { label: "c", text: "Both are correct." },
+          { label: "d", text: "None of the above." }
+        ],
+        correct: "c"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 5",
+        question: "An effort that requires a start and end point and resources for execution is:",
+        options: [
+          { label: "a", text: "Event." },
+          { label: "b", text: "Activity." },
+          { label: "c", text: "Node Network." },
+          { label: "d", text: "Path." }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 6",
+        question: "The Critical Path connects:",
+        options: [
+          { label: "a", text: "Non-critical activities." },
+          { label: "b", text: "Critical activities." },
+          { label: "c", text: "Dummy activities only." },
+          { label: "d", text: "Random events." }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 7",
+        question: "The purpose of drawing activities on a network diagram is to:",
+        options: [
+          { label: "a", text: "Know the project cost only." },
+          { label: "b", text: "Represent activities according to the existing relationships between them." },
+          { label: "c", text: "Reduce the number of workers." },
+          { label: "d", text: "Cancel non-critical activities." }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Question 8",
+        question: "A (Start-to-Start - SS) relationship means:",
+        options: [
+          { label: "a", text: "The successor task cannot start unless the first task starts." },
+          { label: "b", text: "A task finishes when another starts." },
+          { label: "c", text: "A task does not finish until the previous one finishes." },
+          { label: "d", text: "An illogical relationship." }
+        ],
+        correct: "a"
+      },
+
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 1",
+        context: tableContext,
+        question: "The critical path for the project shown in the figure is:",
+        options: [
+          { label: "a", text: "A-D-F-G-H" },
+          { label: "b", text: "A-B-F-G-H" },
+          { label: "c", text: "A-C-F-G-H" }
+        ],
+        correct: "a"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 2",
+        context: tableContext,
+        question: "The early start time for activity C is .......... units of time.",
+        options: [
+          { label: "a", text: "30" },
+          { label: "b", text: "5" },
+          { label: "c", text: "10" },
+          { label: "d", text: "17" }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 3",
+        context: tableContext,
+        question: "The late finish time for activity D is .......... units of time.",
+        options: [
+          { label: "a", text: "30" },
+          { label: "b", text: "20" },
+          { label: "c", text: "10" },
+          { label: "d", text: "12" }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 4",
+        context: tableContext,
+        question: "The project completion time is ..........",
+        options: [
+          { label: "a", text: "200" },
+          { label: "b", text: "235" },
+          { label: "c", text: "170" },
+          { label: "d", text: "35" }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 5",
+        context: tableContext,
+        question: "The relationship between the two tasks (A&B) is ..........",
+        options: [
+          { label: "a", text: "FF" },
+          { label: "b", text: "FS" },
+          { label: "c", text: "SF" },
+          { label: "d", text: "SS" }
+        ],
+        correct: "a"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 6",
+        context: tableContext,
+        question: ".......... is reaching a specific point in time and does not require a beginning or end date.",
+        options: [
+          { label: "a", text: "Activity" },
+          { label: "b", text: "Event" },
+          { label: "c", text: "Project" },
+          { label: "d", text: "Other" }
+        ],
+        correct: "b"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 7",
+        context: tableContext,
+        question: ".......... is calculated by determining the difference between a late start and an early start.",
+        options: [
+          { label: "a", text: "Time elasticity" },
+          { label: "b", text: "Variance" },
+          { label: "c", text: "Standard deviation" }
+        ],
+        correct: "a"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 8",
+        context: tableContext,
+        question: "The optimal standard deviation is ..........",
+        options: [
+          { label: "a", text: "10" },
+          { label: "b", text: "1" },
+          { label: "c", text: "0" },
+          { label: "d", text: "100" }
+        ],
+        correct: "c"
+      },
+      {
+        type: "mcq",
+        section: "Multiple Choice Questions",
+        number: "Table Question 9",
+        context: tableContext,
+        question: "What is the standard deviation if the variance for critical activities is 4?",
+        options: [
+          { label: "a", text: "16" },
+          { label: "b", text: "4" },
+          { label: "c", text: "2" },
+          { label: "d", text: "8" }
+        ],
+        correct: "c"
+      },
+
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 1",
+        question: "What is the primary purpose of using a PERT (Programme Evaluation and Review Technique) chart in project management?",
+        options: [
+          { label: "a", text: "To calculate the exact financial cost of each individual task within a project." },
+          { label: "b", text: "To assign human resources and personnel to specific project milestones." },
+          { label: "c", text: "To replace the need for identifying task dependencies in simple projects." },
+          { label: "d", text: "To plan and manage large and complex projects by illustrating task sequences and dependencies." }
+        ],
+        correct: "d",
+        explanation: "PERT is specifically designed to handle the complexities of large-scale projects by mapping out the relationships between tasks."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 2",
+        question: "In the context of time estimation, how is 'Probable time' (M) defined?",
+        options: [
+          { label: "a", text: "The absolute minimum time required to complete a task if everything goes perfectly." },
+          { label: "b", text: "The best estimate of how long a task takes, assuming no problems arise." },
+          { label: "c", text: "The average of the optimistic and pessimistic time estimates." },
+          { label: "d", text: "The maximum time required to complete a task, accounting for potential delays." }
+        ],
+        correct: "b",
+        explanation: "The source defines probable time as the most frequent or best estimate of duration under normal conditions."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 3",
+        question: "Which of the following represents the correct formula for calculating the Expected time (E) of a task?",
+        options: [
+          { label: "a", text: "$E = \\frac{O + (6 \\times M) + P}{4}$" },
+          { label: "b", text: "$E = \\frac{O + (4 \\times M) + P}{6}$" },
+          { label: "c", text: "$E = \\frac{O + M + P}{3}$" },
+          { label: "d", text: "$E = \\frac{P - O}{6}$" }
+        ],
+        correct: "b",
+        explanation: "This formula provides a weighted average, giving more importance to the most probable time estimate."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 4",
+        question: "What does a standard deviation ($\\sigma$) of 0 indicate about a project manager's time estimates?",
+        options: [
+          { label: "a", text: "There is a high degree of uncertainty in the project timeline." },
+          { label: "b", text: "The pessimistic time is significantly larger than the optimistic time." },
+          { label: "c", text: "The task will take zero weeks to complete." },
+          { label: "d", text: "The time estimates are considered accurate." }
+        ],
+        correct: "d",
+        explanation: "A standard deviation of zero means there is no distance from the expected value, implying certainty and accuracy in the estimate."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 5",
+        question: "If a task has a pessimistic time (P) of 11 weeks and an optimistic time (O) of 5 weeks, what is the standard deviation ($\\sigma$)?",
+        options: [
+          { label: "a", text: "0.5" },
+          { label: "b", text: "1" },
+          { label: "c", text: "6" },
+          { label: "d", text: "2" }
+        ],
+        correct: "b",
+        explanation: "Using the formula $\\sigma = \\frac{P - O}{6}$, we calculate $\\frac{11 - 5}{6} = 1$."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 6",
+        question: "How is 'Slack time' determined for an activity within a project network?",
+        options: [
+          { label: "a", text: "Target time minus Critical path time." },
+          { label: "b", text: "Expected time minus Optimistic time." },
+          { label: "c", text: "The sum of all standard deviations on the critical path." },
+          { label: "d", text: "Late completion time minus Early completion time." }
+        ],
+        correct: "d",
+        explanation: "Slack represents the amount of time a task can be delayed without affecting the project finish date, calculated as $LS - ES$ or $LF - EF$."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 7",
+        question: "When calculating the variance of the critical path, which method should be used?",
+        options: [
+          { label: "a", text: "Average the slack times of the non-critical activities." },
+          { label: "b", text: "Sum the standard deviations ($\\sigma$) of every activity in the entire project network." },
+          { label: "c", text: "Divide the total project completion time by the number of nodes." },
+          { label: "d", text: "Sum the variances ($\\sigma^2$) of all activities that lie on the critical path." }
+        ],
+        correct: "d",
+        explanation: "The total variance for the project duration is the sum of the individual variances of the tasks that define the project length."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 8",
+        question: "What is represented by the vectors (arrow lines) in a PERT chart?",
+        options: [
+          { label: "a", text: "The milestones and project events." },
+          { label: "b", text: "The tasks or activities that must be performed." },
+          { label: "c", text: "The slack time available for each activity." },
+          { label: "d", text: "The final completion probability of the project." }
+        ],
+        correct: "b",
+        explanation: "In a PERT chart, nodes represent events or milestones, while the arrows connecting them represent the actual work or tasks."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 9",
+        question: "A task has an optimistic time of 2, a most probable time of 4, and a pessimistic time of 12. What is its Expected time (E)?",
+        options: [
+          { label: "a", text: "30" },
+          { label: "b", text: "6" },
+          { label: "c", text: "4" },
+          { label: "d", text: "5" }
+        ],
+        correct: "d",
+        explanation: "Using $E = \\frac{O + 4M + P}{6}$, we get $\\frac{2 + (4 \\times 4) + 12}{6} = \\frac{30}{6} = 5$."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 10",
+        question: "According to the PERT methodology, what is the first step in creating a chart?",
+        options: [
+          { label: "a", text: "Draw nodes representing events and milestones." },
+          { label: "b", text: "Define all the tasks that need to be completed." },
+          { label: "c", text: "Calculate the critical path variance." },
+          { label: "d", text: "Assign a completion time to each task." }
+        ],
+        correct: "b",
+        explanation: "Before dependencies or times can be assigned, the project manager must first identify every individual task in the project."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 11",
+        question: "What does the acronym PERT stand for in the context of project management applications?",
+        options: [
+          { label: "a", text: "Performance Evaluation and Review Task" },
+          { label: "b", text: "Process Efficiency and Reporting Tool" },
+          { label: "c", text: "Project Estimation and Resource Tracking" },
+          { label: "d", text: "Program Evaluation and Review Technique" }
+        ],
+        correct: "d",
+        explanation: "This is the formal name of the method used to analyse the tasks involved in completing a given project, especially the time needed to complete each task."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 12",
+        question: "In a PERT chart, what visual element is used to represent the tasks themselves?",
+        options: [
+          { label: "a", text: "Vectors (arrow lines)" },
+          { label: "b", text: "Dashed boxes" },
+          { label: "c", text: "Grid coordinates" },
+          { label: "d", text: "Nodes (circles)" }
+        ],
+        correct: "a",
+        explanation: "In network diagramming for PERT, arrows or vectors signify the actual work or tasks being performed between events."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 13",
+        question: "Which time estimate assumes the 'best estimate' of how long an activity will take if no problems arise during execution?",
+        options: [
+          { label: "a", text: "Expected time (E)" },
+          { label: "b", text: "Probable time (M)" },
+          { label: "c", text: "Optimistic time (O)" },
+          { label: "d", text: "Pessimistic time (P)" }
+        ],
+        correct: "b",
+        explanation: "Probable time represents the most likely duration for task completion under normal circumstances without unexpected delays."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 14",
+        question: "According to the source material, which formula is used to calculate the Expected Time (E) for a task?",
+        options: [
+          { label: "a", text: "$E = \\frac{O + 6M + P}{4}$" },
+          { label: "b", text: "$E = \\frac{O + M + P}{3}$" },
+          { label: "c", text: "$E = \\frac{O + (4 \\times M) + P}{6}$" },
+          { label: "d", text: "$E = \\frac{P - O}{6}$" }
+        ],
+        correct: "c",
+        explanation: "This formula provides a weighted average that gives more importance to the most probable time estimate."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 15",
+        question: "If the calculated standard deviation ($\\sigma$) for a task's duration is exactly 0, what does this imply?",
+        options: [
+          { label: "a", text: "The degree of uncertainty is at its maximum." },
+          { label: "b", text: "The time estimates are perfectly accurate." },
+          { label: "c", text: "The task is on the critical path." },
+          { label: "d", text: "The task has no dependencies." }
+        ],
+        correct: "b",
+        explanation: "A standard deviation of zero indicates there is no distance from the expected value, meaning there is no uncertainty in the estimate."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 16",
+        question: "How is the 'Slack time' for a project activity determined?",
+        options: [
+          { label: "a", text: "Optimistic time + Pessimistic time" },
+          { label: "b", text: "Expected time + Standard deviation" },
+          { label: "c", text: "Late completion - Early completion" },
+          { label: "d", text: "Target time - Critical path time" }
+        ],
+        correct: "c",
+        explanation: "Slack represents the amount of time a task can be delayed without affecting the overall project finish date, calculated as the difference between late and early finish times."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 17",
+        question: "How is the total Variance of the critical path calculated in a PERT network?",
+        options: [
+          { label: "a", text: "By finding the difference between the longest and shortest path durations." },
+          { label: "b", text: "By multiplying the standard deviations of the start and end nodes." },
+          { label: "c", text: "By taking the average standard deviation of all project tasks." },
+          { label: "d", text: "By summing the variances ($\\sigma^2$) of all activities on the critical path." }
+        ],
+        correct: "d",
+        explanation: "The variance of the total path is the sum of the individual variances of the activities that comprise that specific path."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 18",
+        question: "When defining the order in which tasks should be performed, what is the project manager identifying?",
+        options: [
+          { label: "a", text: "Standard deviations" },
+          { label: "b", text: "Pessimistic estimates" },
+          { label: "c", text: "Dependencies" },
+          { label: "d", text: "Expected values" }
+        ],
+        correct: "c",
+        explanation: "Dependencies define the logical relationships and required sequence between different tasks in a project."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 19",
+        question: "Which component is necessary to calculate the probability of project completion by a specific target time?",
+        options: [
+          { label: "a", text: "The difference between the target time and the critical path time." },
+          { label: "b", text: "The average slack time of non-critical activities." },
+          { label: "c", text: "The number of nodes in the PERT chart." },
+          { label: "d", text: "The sum of all optimistic times in the network." }
+        ],
+        correct: "a",
+        explanation: "The numerator in the probability (Z-score) calculation is the difference between the desired deadline and the calculated expected duration."
+      },
+      {
+        type: "mcq",
+        section: "PERT Questions",
+        number: "Question 20",
+        question: "What is the formula for the standard deviation ($\\sigma$) of a task in PERT?",
+        options: [
+          { label: "a", text: "$\\sigma = E^2$" },
+          { label: "b", text: "$\\sigma = \\frac{P - O}{6}$" },
+          { label: "c", text: "$\\sigma = \\frac{P - M}{4}$" },
+          { label: "d", text: "$\\sigma = \\frac{P + O}{2}$" }
+        ],
+        correct: "b",
+        explanation: "The standard deviation is calculated by dividing the range between the pessimistic and optimistic times by six."
+      },
+
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 1",
+        question: "What is the primary purpose of project scheduling?",
+        options: [
+          { label: "a", text: "To establish the final financial audit of the project" },
+          { label: "b", text: "To convert a project plan into a timeline for execution" },
+          { label: "c", text: "To monitor the impact of inflation on resource procurement" },
+          { label: "d", text: "To identify the human resources required for individual tasks" }
+        ],
+        correct: "b",
+        explanation: "Scheduling is defined as the process of turning a plan into a sequential timeline from start to completion. Identifying resources and monitoring inflation are separate processes related to resource management and budgeting respectively."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 2",
+        question: "Which of the following is NOT listed as one of the three stages of project scheduling?",
+        options: [
+          { label: "a", text: "Procurement" },
+          { label: "b", text: "Control" },
+          { label: "c", text: "Planning" },
+          { label: "d", text: "Activity scheduling" }
+        ],
+        correct: "a",
+        explanation: "The source explicitly lists planning, activity scheduling, and control as the three stages. Procurement is a function of resource management or budgeting rather than a core stage of the scheduling process itself."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 3",
+        question: "In the context of project budgeting, why is it necessary to forecast the impact of inflation?",
+        options: [
+          { label: "a", text: "To ensure the accuracy of the budget when resources are used over time" },
+          { label: "b", text: "To determine the critical path of the project timeline" },
+          { label: "c", text: "To identify which human resources are operational or administrative" },
+          { label: "d", text: "To compare actual performance results with planned objectives" }
+        ],
+        correct: "a",
+        explanation: "Inflation forecasting is one of the five steps to achieve a more accurate budget by accounting for cost changes during the project. Determining the critical path and comparing performance are functions of scheduling and control."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 4",
+        question: "What are the two fundamental types of resources that must be identified for a successful project management plan?",
+        options: [
+          { label: "a", text: "Internal and external stakeholders" },
+          { label: "b", text: "Financial and inflationary resources" },
+          { label: "c", text: "Scheduled and unscheduled activities" },
+          { label: "d", text: "Operational and human resources" }
+        ],
+        correct: "d",
+        explanation: "The material states that determining appropriate operational and human resources is crucial for the management plan. While financial factors and stakeholders are important, they are not categorized as the 'fundamental resources' in this specific section."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 5",
+        question: "How is the 'Control' function defined within the project management process?",
+        options: [
+          { label: "a", text: "Forecasting when resources will be needed for implementation" },
+          { label: "b", text: "Writing detailed reports for the project portfolio" },
+          { label: "c", text: "Examining and comparing actual performance with planned objectives" },
+          { label: "d", text: "Calculating the total duration of tasks on the critical path" }
+        ],
+        correct: "c",
+        explanation: "Control involves monitoring and comparing real-time results against the pre-established project plan. Calculations and forecasting are parts of the scheduling and budgeting phases that occur before or alongside control."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 6",
+        question: "Project control encompasses monitoring three specific aspects. Which of the following is one of those aspects?",
+        options: [
+          { label: "a", text: "Inflation rates" },
+          { label: "b", text: "Stakeholder resumes" },
+          { label: "c", text: "Resource procurement risks" },
+          { label: "d", text: "Project processes" }
+        ],
+        correct: "d",
+        explanation: "The source identifies the monitoring of inputs, processes, and outputs as the core aspects of project control. Monitoring inflation or risks are specific steps within the budgeting process."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 7",
+        question: "When generating a project report, which point helps ensure expenditures remain within the allocated budget?",
+        options: [
+          { label: "a", text: "Project expenses" },
+          { label: "b", text: "The timeline of key milestones" },
+          { label: "c", text: "The project portfolio" },
+          { label: "d", text: "Current status of the project" }
+        ],
+        correct: "a",
+        explanation: "Reporting focuses on expenses specifically to ensure they align with the financial plan. While the portfolio and status reports provide context, the expense section directly addresses the budget constraint."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 8",
+        question: "In MS-Project, what value for 'Total Slack' indicates that an activity is on the critical path?",
+        options: [
+          { label: "a", text: "A negative value" },
+          { label: "b", text: "0 days" },
+          { label: "c", text: "5 days" },
+          { label: "d", text: "1 day" }
+        ],
+        correct: "b",
+        explanation: "Activities on the critical path have no flexibility or 'slack,' meaning any delay in these tasks will delay the entire project. Tasks with 1 or more days of slack are not critical as they have a buffer."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 9",
+        question: "In a project network, if Activity G is listed as having predecessors 'Activity B' and 'Activity C', which activities must be completed before Activity G can begin?",
+        options: [
+          { label: "a", text: "Activity E only" },
+          { label: "b", text: "Activity A only" },
+          { label: "c", text: "Activities B and C" },
+          { label: "d", text: "Activities D, E, and F" }
+        ],
+        correct: "c",
+        explanation: "A task with specific predecessors requires all listed activities to finish before it can begin. Thus, Activity G depends on the completion of both B and C."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 10",
+        question: "If Activity A has a duration of 3 units and Activity B (which follows Activity A) has a duration of 3 units, what is the earliest finish (EF) time for Activity B?",
+        options: [
+          { label: "a", text: "9 units" },
+          { label: "b", text: "3 units" },
+          { label: "c", text: "0 units" },
+          { label: "d", text: "6 units" }
+        ],
+        correct: "d",
+        explanation: "The earliest finish is the earliest start (which is the finish of the predecessor, 3) plus the duration (3). So, 3 + 3 = 6. This calculation follows the forward pass logic."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 11",
+        question: "According to the lecture, what is the primary purpose of project scheduling?",
+        options: [
+          { label: "a", text: "Writing reports for the project stakeholders" },
+          { label: "b", text: "Converting a project plan into a timeline for execution" },
+          { label: "c", text: "Determining the final budget of the project" },
+          { label: "d", text: "Allocating human resources to specific workstations" }
+        ],
+        correct: "b",
+        explanation: "Scheduling is the specific process of taking a plan and mapping out all activities and milestones against a chronological timeline."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 12",
+        question: "Which of the following represents the correct sequence of project scheduling stages?",
+        options: [
+          { label: "a", text: "Input monitoring, Process monitoring, and Output monitoring" },
+          { label: "b", text: "Planning, Activity scheduling, and Control" },
+          { label: "c", text: "Forecasting, Procurement, and Evaluation" },
+          { label: "d", text: "Reporting, Tracking progress, and Budgeting" }
+        ],
+        correct: "b",
+        explanation: "The source material identifies these three specific stages as the core components of the project scheduling process."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 13",
+        question: "In the context of project budgeting, what is the fourth step mentioned for achieving an accurate budget?",
+        options: [
+          { label: "a", text: "Forecasting the cost of resources when they are used" },
+          { label: "b", text: "Forecasting potential risks during resource acquisition" },
+          { label: "c", text: "Forecasting when the resources will be needed" },
+          { label: "d", text: "Forecasting the impact of inflation on resources" }
+        ],
+        correct: "d",
+        explanation: "Inflation is explicitly listed as the fourth factor to forecast when developing a realistic project budget."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 14",
+        question: "Resource management involves identifying which two fundamental types of resources to ensure project success?",
+        options: [
+          { label: "a", text: "Internal and external resources" },
+          { label: "b", text: "Software and hardware resources" },
+          { label: "c", text: "Financial and environmental resources" },
+          { label: "d", text: "Operational and human resources" }
+        ],
+        correct: "d",
+        explanation: "The material states that both operational and human resources are fundamental to developing a detailed project management plan."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 15",
+        question: "Which function is described as the 'final element in the management process' and involves comparing actual performance with planned objectives?",
+        options: [
+          { label: "a", text: "Scheduling" },
+          { label: "b", text: "Reporting" },
+          { label: "c", text: "Forecasting" },
+          { label: "d", text: "Control" }
+        ],
+        correct: "d",
+        explanation: "Control, or tracking progress, is defined as the final management element that uses specific criteria to compare results against plans."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 16",
+        question: "What is indicated by a task having a duration of 0 days in the MS-Project practical examples?",
+        options: [
+          { label: "a", text: "The task has been completed already" },
+          { label: "b", text: "It is a project milestone" },
+          { label: "c", text: "It is a critical task with high priority" },
+          { label: "d", text: "It is an error in the project schedule" }
+        ],
+        correct: "b",
+        explanation: "In MS-Project, activities with zero duration, like a 'Finish' or 'Start' node, are used to represent milestones or completion events."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 17",
+        question: "By calculating the longest path through a project's network diagram (the critical path), a project manager finds a total of 20 time units. What does this number represent?",
+        options: [
+          { label: "a", text: "The project completion time" },
+          { label: "b", text: "The slack time of the project" },
+          { label: "c", text: "The average task duration" },
+          { label: "d", text: "The total number of parallel tasks" }
+        ],
+        correct: "a",
+        explanation: "By calculating the longest path through the network diagram (the critical path), the resulting sum represents the total project completion time."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 18",
+        question: "Which of the following is NOT one of the focuses of a project report as described in the lecture?",
+        options: [
+          { label: "a", text: "The project portfolio and key resource challenges" },
+          { label: "b", text: "The current status of the project" },
+          { label: "c", text: "The marketing strategy for project outputs" },
+          { label: "d", text: "The relationship between timeframe and budget" }
+        ],
+        correct: "c",
+        explanation: "The source material lists current status, project portfolio, timeframe/budget relationship, and expenses, but does not mention marketing strategies."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 19",
+        question: "What does a 'Total Slack' of 0 days signify for a task in MS-Project?",
+        options: [
+          { label: "a", text: "The task is a summary task" },
+          { label: "b", text: "The task has no predecessors" },
+          { label: "c", text: "The task is on the critical path" },
+          { label: "d", text: "The task requires no resources" }
+        ],
+        correct: "c",
+        explanation: "Tasks with zero slack cannot be delayed without delaying the entire project, making them critical activities on the critical path."
+      },
+      {
+        type: "mcq",
+        section: "Project Scheduling Questions",
+        number: "Question 20",
+        question: "If a task in a project schedule has predecessors listed as 'A & C', what does this imply about its start time?",
+        options: [
+          { label: "a", text: "It is the predecessor for both Task A and Task C" },
+          { label: "b", text: "It can only start after both Task A and Task C are completed" },
+          { label: "c", text: "It can start as soon as either Task A or Task C finishes" },
+          { label: "d", text: "It starts simultaneously with Task A and Task C" }
+        ],
+        correct: "b",
+        explanation: "A task with multiple predecessors requires all listed activities to finish before it can begin. Standard dependency logic requires all specified predecessors to be complete."
+      }
+    ];
+
+    let allQuestions = [];
+    let filteredQuestions = [];
+    let currentIndex = 0;
+
+    function initializeQuiz() {
+      allQuestions = questions.map((question, index) => ({
+        ...question,
+        id: index + 1,
+        answered: false,
+        selected: null,
+        isCorrect: null
+      }));
+
+      filteredQuestions = [...allQuestions];
+      currentIndex = 0;
+
+      updateStats();
+      renderQuestion();
     }
-    
-    container.innerHTML = `
-        <div class="q-number">Question ${currentIndex + 1} <span class="q-type">${q.type === 'tf' ? 'True/False' : 'Multiple Choice'}</span></div>
-        <div class="q-text">${q.q}</div>
-        ${optionsHTML}
-        <div class="feedback" id="feedback"></div>
-    `;
-    
-    if (userAnswer !== undefined) {
-        showResult(globalIdx, userAnswer);
+
+    function escapeHTML(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
-    
-    document.getElementById('qCounter').textContent = `${currentIndex + 1} / ${filteredQuestions.length}`;
-    document.getElementById('prevBtn').disabled = currentIndex === 0;
-    document.getElementById('nextBtn').disabled = currentIndex === filteredQuestions.length - 1;
-    updateStats();
-}
 
-function selectAnswer(globalIdx, val) {
-    if (userAnswers[globalIdx] !== undefined) return;
-    userAnswers[globalIdx] = val;
-    showResult(globalIdx, val);
-    updateStats();
-}
-
-function showResult(globalIdx, val) {
-    const q = questions[globalIdx];
-    const isCorrect = (q.type === 'tf') ? (val === q.a) : (val === q.a);
-    const buttons = document.querySelectorAll('.option');
-    
-    buttons.forEach(btn => {
-        btn.disabled = true;
-        const btnVal = btn.dataset.val;
-        if (q.type === 'tf') {
-            if (btnVal === String(q.a)) btn.classList.add('show-correct');
-            if (btnVal === String(val) && val !== q.a) btn.classList.add('wrong');
-        } else {
-            if (parseInt(btnVal) === q.a) btn.classList.add('show-correct');
-            if (parseInt(btnVal) === val && val !== q.a) btn.classList.add('wrong');
-        }
-    });
-    
-    const feedback = document.getElementById('feedback');
-    feedback.classList.add('show', isCorrect ? 'correct' : 'wrong');
-    let msg = isCorrect ? '✅ Correct!' : '❌ Incorrect.';
-    if (q.type === 'tf') {
-        msg += ` The correct answer is <strong>${q.a ? 'True' : 'False'}</strong>.`;
-    } else {
-        msg += ` The correct answer is <strong>${String.fromCharCode(97+q.a)}) ${q.options[q.a]}</strong>.`;
+    function renderText(text) {
+      return escapeHTML(text).replace(/\n/g, "<br>");
     }
-    if (q.exp) msg += `<br><em>${q.exp}</em>`;
-    feedback.innerHTML = msg;
-}
 
-function updateStats() {
-    let correct = 0, wrong = 0;
-    Object.keys(userAnswers).forEach(idx => {
-        const q = questions[idx];
-        if (userAnswers[idx] === q.a) correct++;
-        else wrong++;
-    });
-    const total = correct + wrong;
-    document.getElementById('answeredCount').textContent = total;
-    document.getElementById('correctCount').textContent = correct;
-    document.getElementById('wrongCount').textContent = wrong;
-    document.getElementById('scorePercent').textContent = total > 0 ? Math.round((correct/total)*100) + '%' : '0%';
-    document.getElementById('progressFill').style.width = ((currentIndex + 1) / filteredQuestions.length * 100) + '%';
-}
+    function renderQuestion() {
+      const container = document.getElementById("questionCard");
 
-function nextQuestion() {
-    if (currentIndex < filteredQuestions.length - 1) {
+      if (filteredQuestions.length === 0) {
+        container.innerHTML = `
+          <div class="feedback wrong">
+            No questions match your current filters.
+          </div>
+        `;
+        return;
+      }
+
+      if (currentIndex >= filteredQuestions.length) {
+        currentIndex = filteredQuestions.length - 1;
+      }
+
+      if (currentIndex < 0) {
+        currentIndex = 0;
+      }
+
+      const q = filteredQuestions[currentIndex];
+      const typeLabel = q.type === "tf" ? "True / False" : "MCQ";
+
+      let answersHTML = "";
+
+      if (q.type === "tf") {
+        const tfOptions = ["True", "False"];
+
+        answersHTML = tfOptions.map(option => {
+          let className = "answer-btn";
+
+          if (q.answered) {
+            if (option === q.correct) className += " correct";
+            if (option === q.selected && option !== q.correct) className += " wrong";
+          }
+
+          return `
+            <button class="${className}" onclick="answerQuestion('${option}')" ${q.answered ? "disabled" : ""}>
+              ${option}
+            </button>
+          `;
+        }).join("");
+      } else {
+        answersHTML = q.options.map(option => {
+          let className = "answer-btn";
+
+          if (q.answered) {
+            if (option.label === q.correct) className += " correct";
+            if (option.label === q.selected && option.label !== q.correct) className += " wrong";
+          }
+
+          return `
+            <button class="${className}" onclick="answerQuestion('${option.label}')" ${q.answered ? "disabled" : ""}>
+              <strong>${escapeHTML(option.label)})</strong> ${renderText(option.text)}
+            </button>
+          `;
+        }).join("");
+      }
+
+      let feedbackHTML = "";
+
+      if (q.answered) {
+        const correctText = q.type === "tf"
+          ? q.correct
+          : `${q.correct}) ${q.options.find(option => option.label === q.correct).text}`;
+
+        feedbackHTML = `
+          <div class="feedback ${q.isCorrect ? "correct" : "wrong"}">
+            ${q.isCorrect ? "Correct!" : "Wrong."}
+            <div class="detail">
+              Correct Answer: ${renderText(correctText)}
+            </div>
+            ${q.reason ? `<div class="detail">Reason: ${renderText(q.reason)}</div>` : ""}
+            ${q.explanation ? `<div class="detail">Explanation: ${renderText(q.explanation)}</div>` : ""}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="question-top">
+          <span class="badge">${typeLabel}</span>
+          <span class="badge">Question ${currentIndex + 1} of ${filteredQuestions.length}</span>
+        </div>
+
+        <div class="section-title">${renderText(q.section)} - ${renderText(q.number)}</div>
+
+        ${q.context ? `<pre class="context-table">${escapeHTML(q.context)}</pre>` : ""}
+
+        <div class="question-text">
+          ${renderText(q.question)}
+        </div>
+
+        <div class="answers">
+          ${answersHTML}
+        </div>
+
+        ${feedbackHTML}
+      `;
+
+      updateProgress();
+      typesetMath();
+    }
+
+    function answerQuestion(selected) {
+      const q = filteredQuestions[currentIndex];
+
+      if (!q || q.answered) return;
+
+      q.answered = true;
+      q.selected = selected;
+      q.isCorrect = selected === q.correct;
+
+      const original = allQuestions.find(item => item.id === q.id);
+
+      if (original) {
+        original.answered = q.answered;
+        original.selected = q.selected;
+        original.isCorrect = q.isCorrect;
+      }
+
+      updateStats();
+      renderQuestion();
+    }
+
+    function updateStats() {
+      const total = allQuestions.length;
+      const answered = allQuestions.filter(q => q.answered).length;
+      const correct = allQuestions.filter(q => q.isCorrect === true).length;
+      const percent = answered === 0 ? 0 : Math.round((correct / answered) * 100);
+
+      document.getElementById("totalCount").textContent = total;
+      document.getElementById("answeredCount").textContent = answered;
+      document.getElementById("scoreCount").textContent = correct;
+      document.getElementById("percentCount").textContent = percent + "%";
+    }
+
+    function updateProgress() {
+      const answered = allQuestions.filter(q => q.answered).length;
+      const total = allQuestions.length || 1;
+      const percent = Math.round((answered / total) * 100);
+
+      document.getElementById("progressBar").style.width = percent + "%";
+    }
+
+    function nextQuestion() {
+      if (currentIndex < filteredQuestions.length - 1) {
         currentIndex++;
         renderQuestion();
+      }
     }
-}
 
-function prevQuestion() {
-    if (currentIndex > 0) {
+    function previousQuestion() {
+      if (currentIndex > 0) {
         currentIndex--;
         renderQuestion();
+      }
     }
-}
 
-function resetQuiz() {
-    if (confirm('Are you sure you want to reset all answers?')) {
-        userAnswers = {};
-        currentIndex = 0;
-        renderQuestion();
+    function restartQuiz() {
+      if (!confirm("Restart the quiz and clear all answers?")) return;
+
+      allQuestions.forEach(q => {
+        q.answered = false;
+        q.selected = null;
+        q.isCorrect = null;
+      });
+
+      currentIndex = 0;
+      applyFilters();
+      updateStats();
+      renderQuestion();
     }
-}
 
-function randomQuestion() {
-    currentIndex = Math.floor(Math.random() * filteredQuestions.length);
-    renderQuestion();
-}
+    function applyFilters() {
+      const search = document.getElementById("searchInput").value.toLowerCase().trim();
+      const type = document.getElementById("typeFilter").value;
+      const status = document.getElementById("statusFilter").value;
 
-document.getElementById('filterSelect').addEventListener('change', (e) => {
-    const val = e.target.value;
-    if (val === 'all') filteredQuestions = [...questions];
-    else if (val === 'tf') filteredQuestions = questions.filter(q => q.type === 'tf');
-    else filteredQuestions = questions.filter(q => q.type === 'mcq');
-    currentIndex = 0;
-    renderQuestion();
-});
+      filteredQuestions = allQuestions.filter(q => {
+        const searchableText = [
+          q.section,
+          q.number,
+          q.question,
+          q.context || "",
+          q.reason || "",
+          q.explanation || "",
+          ...(q.options ? q.options.map(option => option.text) : [])
+        ].join(" ").toLowerCase();
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') nextQuestion();
-    if (e.key === 'ArrowLeft') prevQuestion();
-});
+        const matchesSearch = searchableText.includes(search);
+        const matchesType = type === "all" || q.type === type;
 
-renderQuestion();
-</script>
+        let matchesStatus = true;
+
+        if (status === "unanswered") {
+          matchesStatus = !q.answered;
+        } else if (status === "answered") {
+          matchesStatus = q.answered;
+        } else if (status === "wrong") {
+          matchesStatus = q.isCorrect === false;
+        }
+
+        return matchesSearch && matchesType && matchesStatus;
+      });
+
+      currentIndex = 0;
+      renderQuestion();
+    }
+
+    function typesetMath() {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([document.getElementById("questionCard")]).catch(() => {});
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initializeQuiz);
+  </script>
 </body>
 </html>
