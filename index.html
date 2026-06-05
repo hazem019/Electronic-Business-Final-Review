@@ -84,7 +84,7 @@ main{max-width:1060px;margin:0 auto;padding:28px 16px;position:relative;z-index:
   transition:.25s
 }
 .stat:hover{border-color:var(--accent);background:var(--surface2)}
-.stat strong{display:block;font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);margin-bottom:2px}
+.stat strong{display:block;font-family:'Segoe UI', Arial, sans-serif;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:2px}
 .stat span{font-size:12px;color:var(--text-dim);font-weight:500;text-transform:uppercase;letter-spacing:.8px}
 
 /* ─── Main Card ─── */
@@ -111,6 +111,9 @@ main{max-width:1060px;margin:0 auto;padding:28px 16px;position:relative;z-index:
 .mode-btn.essay-mode-btn{border-color:rgba(123,111,255,.4);color:var(--accent2)}
 .mode-btn.essay-mode-btn:hover{border-color:var(--accent2);background:rgba(123,111,255,.08)}
 .mode-btn.essay-mode-btn.active{background:rgba(123,111,255,.12);border-color:var(--accent2);color:var(--accent2)}
+.mode-btn.practical-mode-btn{border-color:rgba(255,159,67,.4);color:var(--practical-color,#ff9f43)}
+.mode-btn.practical-mode-btn:hover{border-color:#ff9f43;background:rgba(255,159,67,.08)}
+.mode-btn.practical-mode-btn.active{background:rgba(255,159,67,.12);border-color:#ff9f43;color:#ff9f43}
 
 /* ─── Filters ─── */
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
@@ -277,6 +280,215 @@ button{
 footer{text-align:center;color:var(--text-muted);padding:36px 12px;font-size:12px;letter-spacing:.5px;border-top:1px solid var(--border);margin-top:12px}
 .hidden{display:none!important}
 
+/* ─── Practical Case Section ─── */
+:root{
+  --practical-color:#ff9f43;
+  --practical-glow:rgba(255,159,67,.18);
+  --spss-color:#00d4aa;
+  --spss-bg:rgba(0,212,170,.08);
+}
+
+.practical-header{
+  text-align:center;margin-bottom:36px;padding-bottom:28px;
+  border-bottom:1px solid var(--border);
+  position:relative
+}
+.practical-header::after{
+  content:'PRACTICAL';
+  position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+  font-family:'Syne',sans-serif;font-size:80px;font-weight:800;
+  color:rgba(255,159,67,.04);letter-spacing:8px;white-space:nowrap;
+  pointer-events:none;user-select:none
+}
+.practical-header h2{
+  font-family:'Syne',sans-serif;font-size:26px;font-weight:800;
+  background:linear-gradient(135deg,#e8eaf6 30%,var(--practical-color));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px
+}
+.practical-header p{color:var(--text-dim);font-size:15px}
+
+/* Case Intro Banner */
+.case-intro{
+  background:linear-gradient(135deg,rgba(255,159,67,.1) 0%,rgba(123,111,255,.08) 100%);
+  border:1px solid rgba(255,159,67,.25);
+  border-radius:18px;padding:24px 28px;margin-bottom:32px;
+  position:relative;overflow:hidden
+}
+.case-intro::before{
+  content:'📊';position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  font-size:60px;opacity:.15
+}
+.case-intro-label{
+  display:inline-block;
+  background:var(--practical-color);color:#0d0f1a;
+  padding:4px 14px;border-radius:99px;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:12px
+}
+.case-intro h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px}
+.case-intro p{color:var(--text-dim);font-size:14px;line-height:1.7}
+
+/* Data Table */
+.data-table-wrap{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;margin-bottom:32px
+}
+.data-table-header{
+  background:linear-gradient(135deg,rgba(255,159,67,.12),rgba(123,111,255,.1));
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px
+}
+.data-table-header span{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--practical-color);letter-spacing:.5px;text-transform:uppercase}
+.data-table-header .table-icon{font-size:16px}
+table.student-data{width:100%;border-collapse:collapse}
+table.student-data th{
+  background:rgba(255,159,67,.08);
+  padding:12px 18px;text-align:center;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  color:var(--practical-color);letter-spacing:.8px;text-transform:uppercase;
+  border-bottom:1px solid var(--border)
+}
+table.student-data td{
+  padding:12px 18px;text-align:center;
+  font-size:14px;color:var(--text-dim);
+  border-bottom:1px solid rgba(42,46,80,.5);
+  transition:.2s
+}
+table.student-data tr:last-child td{border-bottom:none}
+table.student-data tr:hover td{background:rgba(255,159,67,.04);color:var(--text)}
+.dept-a{color:#7b6fff;font-weight:700}
+.dept-b{color:#ff6b9d;font-weight:700}
+
+/* Task Cards */
+.tasks-grid{display:grid;gap:24px}
+.task-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+  position:relative
+}
+.task-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 16px 48px rgba(0,0,0,.4);
+}
+.task-card-1:hover{border-color:rgba(0,212,170,.3);box-shadow:0 16px 48px rgba(0,212,170,.1)}
+.task-card-2:hover{border-color:rgba(123,111,255,.3);box-shadow:0 16px 48px rgba(123,111,255,.1)}
+.task-card-3:hover{border-color:rgba(255,107,157,.3);box-shadow:0 16px 48px rgba(255,107,157,.1)}
+
+.task-card-header{
+  padding:20px 24px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:16px
+}
+.task-icon-wrap{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0
+}
+.task-card-1 .task-icon-wrap{background:rgba(0,212,170,.12)}
+.task-card-2 .task-icon-wrap{background:rgba(123,111,255,.12)}
+.task-card-3 .task-icon-wrap{background:rgba(255,107,157,.12)}
+
+.task-meta{flex:1}
+.task-number-badge{
+  display:inline-block;
+  padding:3px 12px;border-radius:99px;
+  font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:8px
+}
+.task-card-1 .task-number-badge{background:rgba(0,212,170,.12);color:var(--accent);border:1px solid rgba(0,212,170,.25)}
+.task-card-2 .task-number-badge{background:rgba(123,111,255,.12);color:var(--accent2);border:1px solid rgba(123,111,255,.25)}
+.task-card-3 .task-number-badge{background:rgba(255,107,157,.12);color:var(--accent3);border:1px solid rgba(255,107,157,.25)}
+
+.task-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px}
+.task-goal{font-size:13px;color:var(--text-dim);line-height:1.6}
+
+.task-body{padding:20px 24px}
+.spss-steps-label{
+  display:flex;align-items:center;gap:8px;margin-bottom:14px
+}
+.spss-steps-label span{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase}
+.spss-steps-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.spss-steps{display:grid;gap:8px}
+.spss-step{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:10px 14px;
+  border-radius:10px;background:var(--surface);
+  border:1px solid transparent;
+  transition:.2s;
+  animation:stepFadeIn .4s ease both
+}
+@keyframes stepFadeIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.spss-step:hover{border-color:var(--border)}
+.step-num{
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;flex-shrink:0;margin-top:1px
+}
+.task-card-1 .step-num{background:rgba(0,212,170,.15);color:var(--accent)}
+.task-card-2 .step-num{background:rgba(123,111,255,.15);color:var(--accent2)}
+.task-card-3 .step-num{background:rgba(255,107,157,.15);color:var(--accent3)}
+
+.step-text{font-size:13.5px;color:var(--text-dim);line-height:1.7}
+.step-arrow{color:var(--practical-color);font-weight:700;margin:0 2px}
+.step-select{
+  display:inline-block;
+  background:rgba(255,159,67,.1);color:var(--practical-color);
+  padding:1px 8px;border-radius:6px;font-size:12px;font-weight:600;
+  border:1px solid rgba(255,159,67,.2)
+}
+.step-action{
+  display:inline-block;
+  background:var(--surface3);color:var(--text);
+  padding:1px 8px;border-radius:6px;font-size:12px;font-weight:600;
+}
+
+/* Output Table */
+.output-table-wrap{
+  margin-top:16px;border-radius:12px;overflow:hidden;
+  border:1px solid var(--border)
+}
+.output-table-label{
+  background:rgba(0,212,170,.06);padding:10px 16px;
+  font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;
+  text-transform:uppercase;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:6px
+}
+table.output-table{width:100%;border-collapse:collapse}
+table.output-table th{
+  background:var(--surface);padding:10px 14px;
+  font-size:11px;font-weight:700;color:var(--text-muted);
+  letter-spacing:.5px;text-transform:uppercase;text-align:center;
+  border-bottom:1px solid var(--border);
+  border-right:1px solid var(--border)
+}
+table.output-table th:last-child{border-right:none}
+table.output-table td{
+  padding:12px 14px;text-align:center;font-size:13px;
+  color:var(--text-dim);border-right:1px solid rgba(42,46,80,.5)
+}
+table.output-table td:last-child{border-right:none}
+table.output-table td:first-child{text-align:left;font-weight:600;color:var(--text)}
+.output-empty{
+  border:2px dashed rgba(0,212,170,.2);
+  border-radius:6px;padding:6px 18px;
+  font-size:12px;color:var(--text-muted);font-style:italic;
+  display:inline-block
+}
+
+/* practical back btn */
+.practical-back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--surface2);color:var(--text-dim);
+  padding:10px 18px;border-radius:10px;
+  margin-bottom:24px;cursor:pointer;font-weight:600;font-size:14px;
+  border:1px solid var(--border);
+  transition:.2s
+}
+.practical-back-btn:hover{border-color:var(--practical-color);color:var(--practical-color)}
+
 /* ─── Scrollbar ─── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
@@ -306,6 +518,7 @@ footer{text-align:center;color:var(--text-muted);padding:36px 12px;font-size:12p
   <div class="mode-selector">
     <button class="mode-btn active" onclick="switchMode('quiz')">⬡ Quiz Questions</button>
     <button class="mode-btn essay-mode-btn" onclick="switchMode('essay')">◈ Key Concepts</button>
+    <button class="mode-btn practical-mode-btn" onclick="switchMode('practical')"> Essay Questions</button>
   </div>
 
   <div id="quizContent">
@@ -334,6 +547,183 @@ footer{text-align:center;color:var(--text-muted);padding:36px 12px;font-size:12p
       <div class="essay-questions" id="essayQuestionsContainer"></div>
     </div>
   </div>
+
+  <!-- ═══ ESSAY QUESTIONS / PRACTICAL CASE ═══ -->
+  <div id="practicalContent" class="hidden">
+    <button class="practical-back-btn" onclick="switchMode('quiz')">← Back to Quiz</button>
+
+    <div class="practical-header">
+      <h2>Essay Questions — Practical Case</h2>
+      <p>Hands-on SPSS analysis walk-through for exam preparation</p>
+    </div>
+
+    <!-- Intro Banner -->
+    <div class="case-intro">
+      <span class="case-intro-label">Practical Case</span>
+      <h3>Student Data Analysis</h3>
+      <p>You have student data and want to perform <strong>descriptive</strong> and <strong>inferential</strong> analysis using SPSS. Follow each task step-by-step below.</p>
+    </div>
+
+    <!-- Source Data Table -->
+    <div class="data-table-wrap">
+      <div class="data-table-header">
+        <span class="table-icon"></span>
+        <span>Source Data Table</span>
+      </div>
+      <table class="student-data">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Department</th>
+            <th>Hours Study</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="dept-a">A</td><td>5</td><td>70</td></tr>
+          <tr><td>2</td><td class="dept-a">A</td><td>6</td><td>75</td></tr>
+          <tr><td>3</td><td class="dept-a">A</td><td>4</td><td>65</td></tr>
+          <tr><td>4</td><td class="dept-b">B</td><td>7</td><td>80</td></tr>
+          <tr><td>5</td><td class="dept-b">B</td><td>8</td><td>85</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Task Cards -->
+    <div class="tasks-grid">
+
+      <!-- Task 1: Descriptive Analysis -->
+      <div class="task-card task-card-1">
+        <div class="task-card-header">
+          <div class="task-icon-wrap">📊</div>
+          <div class="task-meta">
+            <span class="task-number-badge">Task 1</span>
+            <div class="task-title">Descriptive Analysis</div>
+            <div class="task-goal">Extract Mean, Minimum, Maximum, Range, and Std. Deviation for students' grades.</div>
+          </div>
+        </div>
+        <div class="task-body">
+          <div class="spss-steps-label"><span>SPSS Steps</span></div>
+          <div class="spss-steps">
+            <div class="spss-step" style="animation-delay:.05s">
+              <span class="step-num">1</span>
+              <span class="step-text"><span class="step-action">File</span> <span class="step-arrow">➔</span> Import Data <span class="step-arrow">➔</span> Excel <span class="step-arrow">➔</span> Excel Name <span class="step-arrow">➔</span> File Type <span class="step-arrow">➔</span> <span class="step-action">Open</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.1s">
+              <span class="step-num">2</span>
+              <span class="step-text"><span class="step-action">Analyze</span> <span class="step-arrow">➔</span> Descriptive Statistics <span class="step-arrow">➔</span> <span class="step-select">Descriptives</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.15s">
+              <span class="step-num">3</span>
+              <span class="step-text">Select Variable: <span class="step-select">Grade</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.2s">
+              <span class="step-num">4</span>
+              <span class="step-text"><span class="step-action">Options</span> <span class="step-arrow">➔</span> Check: Mean &nbsp;·&nbsp; Minimum &nbsp;·&nbsp; Maximum &nbsp;·&nbsp; Range &nbsp;·&nbsp; Std. Deviation</span>
+            </div>
+            <div class="spss-step" style="animation-delay:.25s">
+              <span class="step-num">5</span>
+              <span class="step-text">Click <span class="step-action">OK</span></span>
+            </div>
+          </div>
+
+          <!-- Expected Output Table -->
+          <div class="output-table-wrap">
+            <div class="output-table-label">📤 Expected Output Table — Descriptive Statistics</div>
+            <table class="output-table">
+              <thead>
+                <tr>
+                  <th></th><th>N</th><th>Mean</th><th>Minimum</th><th>Maximum</th><th>Range</th><th>Std. Deviation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Grade</td>
+                  <td><span class="output-empty">—</span></td>
+                  <td><span class="output-empty">—</span></td>
+                  <td><span class="output-empty">—</span></td>
+                  <td><span class="output-empty">—</span></td>
+                  <td><span class="output-empty">—</span></td>
+                  <td><span class="output-empty">—</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 2: ANOVA Test -->
+      <div class="task-card task-card-2">
+        <div class="task-card-header">
+          <div class="task-icon-wrap">📐</div>
+          <div class="task-meta">
+            <span class="task-number-badge">Task 2</span>
+            <div class="task-title">ANOVA Test</div>
+            <div class="task-goal">Determine whether there is a significant difference in grades between departments A and B.</div>
+          </div>
+        </div>
+        <div class="task-body">
+          <div class="spss-steps-label"><span>SPSS Steps</span></div>
+          <div class="spss-steps">
+            <div class="spss-step" style="animation-delay:.05s">
+              <span class="step-num">1</span>
+              <span class="step-text"><span class="step-action">File</span> <span class="step-arrow">➔</span> Import Data <span class="step-arrow">➔</span> Excel <span class="step-arrow">➔</span> Excel Name <span class="step-arrow">➔</span> File Type <span class="step-arrow">➔</span> <span class="step-action">Open</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.1s">
+              <span class="step-num">2</span>
+              <span class="step-text"><span class="step-action">Analyze</span> <span class="step-arrow">➔</span> Compare Means <span class="step-arrow">➔</span> <span class="step-select">One-Way ANOVA</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.15s">
+              <span class="step-num">3</span>
+              <span class="step-text">Select Variable: <span class="step-select">Grade</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.2s">
+              <span class="step-num">4</span>
+              <span class="step-text">Click <span class="step-action">OK</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task 3: Spearman Test -->
+      <div class="task-card task-card-3">
+        <div class="task-card-header">
+          <div class="task-icon-wrap">🔗</div>
+          <div class="task-meta">
+            <span class="task-number-badge">Task 3</span>
+            <div class="task-title">Spearman Correlation Test</div>
+            <div class="task-goal">Determine the relationship between Hours Study and Grade using Spearman correlation.</div>
+          </div>
+        </div>
+        <div class="task-body">
+          <div class="spss-steps-label"><span>SPSS Steps</span></div>
+          <div class="spss-steps">
+            <div class="spss-step" style="animation-delay:.05s">
+              <span class="step-num">1</span>
+              <span class="step-text"><span class="step-action">File</span> <span class="step-arrow">➔</span> Import Data <span class="step-arrow">➔</span> Excel <span class="step-arrow">➔</span> Excel Name <span class="step-arrow">➔</span> File Type <span class="step-arrow">➔</span> <span class="step-action">Open</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.1s">
+              <span class="step-num">2</span>
+              <span class="step-text"><span class="step-action">Analyze</span> <span class="step-arrow">➔</span> Correlate <span class="step-arrow">➔</span> <span class="step-select">Bivariate</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.15s">
+              <span class="step-num">3</span>
+              <span class="step-text">Select Variables: <span class="step-select">Hours Study</span> &amp; <span class="step-select">Grade</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.2s">
+              <span class="step-num">4</span>
+              <span class="step-text">Select Correlation Coefficient: <span class="step-select">Spearman</span></span>
+            </div>
+            <div class="spss-step" style="animation-delay:.25s">
+              <span class="step-num">5</span>
+              <span class="step-text">Click <span class="step-action">OK</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tasks-grid -->
+  </div><!-- /practicalContent -->
 </section>
 </main>
 <footer>Data Analysis &mdash; Interactive Quiz &amp; Learning Platform</footer>
@@ -539,7 +929,7 @@ const essays=[
 ]},
 {num:"2",title:"Levels of Measurement & Analysis Methods",items:[
   "Nominal Level: Counting and frequency; Chi-square test; Pie charts and bar charts.",
-  "Ordinal Level: Ranking comparisons (greater/smaller); Spearman correlation; Mann-Whitney test (rank-based); Bar charts.",
+  "Ordinal Level: Ranking comparisons (greater/smaller); Spearman correlation; Bar charts.",
   "Interval Level (Scale): Mean and standard deviation; Pearson correlation; Histograms.",
   "Ratio Level (Scale): All arithmetic operations; Regression analysis; Histograms, scatter plots."
 ]},
@@ -562,7 +952,7 @@ const essays=[
   "Structured data is suitable for SPSS; unstructured requires specialized tools."
 ]},
 {num:"6",title:"Data Cleaning in SPSS",items:[
-  "Step 1 — Handle Missing Values: Replace with mean (Mean Substitution), delete the row (Deletion), use LOCF (Last Observation Carried Forward), or use Regression Imputation.",
+  "Step 1 — Handle Missing Values: Replace with mean (Mean Substitution) or delete the row.",
   "Step 2 — Detect and Handle Outliers: Use Boxplot to identify outliers; decide whether to keep, replace, or delete them.",
   "Step 3 — Remove Duplicates: Identify and delete exact duplicate records to prevent sample size inflation.",
   "Step 4 — Standardize Data Format: Unify inconsistent formats (e.g., dates, units, text casing).",
@@ -625,8 +1015,9 @@ function buildEssays(){
 }
 
 function switchMode(m){
-  document.getElementById("quizContent").classList.toggle("hidden",m==="essay");
-  document.getElementById("essayContent").classList.toggle("hidden",m==="quiz");
+  document.getElementById("quizContent").classList.toggle("hidden",m!=="quiz");
+  document.getElementById("essayContent").classList.toggle("hidden",m!=="essay");
+  document.getElementById("practicalContent").classList.toggle("hidden",m!=="practical");
   document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
   event.target.classList.add("active");
   if(m==="quiz")document.getElementById("statsSection").classList.remove("hidden");
